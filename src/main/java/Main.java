@@ -17,8 +17,11 @@ public class Main extends Application
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/view/fxml/Root.fxml"));
 			root = loader.load();
-			primaryStage.setTitle("Add Book!");
-			primaryStage.setScene(new Scene(root));
+			primaryStage.setTitle("Library Manager");
+			primaryStage.setScene(new Scene(root, 800, 600));
+			primaryStage.setMinHeight(565);
+			primaryStage.setHeight(600);
+			primaryStage.setMinWidth(800);
 			primaryStage.show();
 		} catch(IOException e)
 		{
