@@ -1,0 +1,34 @@
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+public class Main extends Application
+{
+	@Override
+	public void start(Stage primaryStage)
+	{
+		Parent root = null;
+		try
+		{
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/view/fxml/Root.fxml"));
+			root = loader.load();
+			primaryStage.setTitle("Add Book!");
+			primaryStage.setScene(new Scene(root));
+			primaryStage.show();
+		} catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void main(String[] args)
+	{
+		launch(args);
+	}
+}
