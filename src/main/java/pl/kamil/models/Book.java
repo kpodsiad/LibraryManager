@@ -6,7 +6,6 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "BOOKS")
 public class Book
 {
-
 	public Book()
 	{
 	}
@@ -20,8 +19,11 @@ public class Book
 	@DatabaseField(columnName = "NAME", canBeNull = false)
 	private String bookName;
 
-	@DatabaseField(columnName = "PUBLISHED", canBeNull = false)
-	private String publishedDate;
+	@DatabaseField(columnName = "PUBLISHER", canBeNull = false)
+	private String publisher;
+
+	@DatabaseField(columnName = "RELEASED_DATE", canBeNull = false)
+	private String releasedDate;
 
 	public Long getId()
 	{
@@ -53,14 +55,24 @@ public class Book
 		this.bookName = bookName;
 	}
 
-	public String getPublishedDate()
+	public String getPublisher()
 	{
-		return publishedDate;
+		return publisher;
 	}
 
-	public void setPublishedDate(String publishedDate)
+	public void setPublisher(String publisher)
 	{
-		this.publishedDate = publishedDate;
+		this.publisher = publisher;
+	}
+
+	public String getReleasedDate()
+	{
+		return releasedDate;
+	}
+
+	public void setReleasedDate(String releasedDate)
+	{
+		this.releasedDate = releasedDate;
 	}
 
 	@Override
@@ -70,7 +82,8 @@ public class Book
 				"id=" + id +
 				", author='" + author + '\'' +
 				", bookName='" + bookName + '\'' +
-				", publishedDate='" + publishedDate + '\'' +
+				", publisher='" + publisher + '\'' +
+				", releasedDate='" + releasedDate + '\'' +
 				'}';
 	}
 }

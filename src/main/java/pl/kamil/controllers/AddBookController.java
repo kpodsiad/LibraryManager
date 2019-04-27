@@ -2,6 +2,7 @@ package pl.kamil.controllers;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -31,24 +32,45 @@ public class AddBookController
 	private Button saveButton;
 
 	@FXML
-	private Button cancelButton;
+	private Button returnButton;
 
 	@FXML
-	void cancelSaving(ActionEvent event)
+	private void initialize()
 	{
-		Stage stage = (Stage) cancelButton.getScene().getWindow();
+		saveButton.disableProperty().bind(
+				Bindings.isEmpty(bookNameTextField.textProperty())
+						.or(Bindings.isEmpty(authorTextField.textProperty())
+								.or(Bindings.isEmpty(publisherTextField.textProperty())
+										.or(Bindings.isEmpty(releaseDateTextField.textProperty())
+										))));
+	}
+
+	@FXML
+	void exitCurrentWindowAndReturn(ActionEvent event)
+	{
+		Stage stage = (Stage) returnButton.getScene().getWindow();
 		stage.close();
 	}
 
 	@FXML
-	void saveBook(ActionEvent event) throws SQLException
+	void saveBook(ActionEvent event)
 	{
-		Book book = new Book();
-		book.setAuthor(authorTextField.getText());
-		book.setBookName(bookNameTextField.getText());
-		book.setPublishedDate(releaseDateTextField.getText());
-		Dao<Book, Long> accountDao = DaoManager.createDao(DBManager.getConnectionSource(), Book.class);
-		accountDao.create(book);
+		try
+		{
+			Dao<Book, Long> bookDao = DaoManager.createDao(DBManager.getConnectionSource(), Book.class);
+			Book book = new Book();
+			book.setAuthor(authorTextField.getText());
+			book.setBookName(bookNameTextField.getText());
+			book.setPublisher(publisherTextField.getText());
+			book.setReleasedDate(releaseDateTextField.getText());
+			bookDao.create(book);
+		} catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+
+		Stage stage = (Stage) saveButton.getScene().getWindow();
+		stage.close();
 	}
 
 }

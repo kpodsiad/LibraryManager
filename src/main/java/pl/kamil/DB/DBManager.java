@@ -6,6 +6,7 @@ import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import pl.kamil.models.Book;
+import pl.kamil.models.Member;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -67,11 +68,18 @@ public class DBManager
 		try
 		{
 			TableUtils.createTableIfNotExists(connectionSource, Book.class);
+			TableUtils.createTableIfNotExists(connectionSource, Member.class);
 		} catch(SQLException e)
 		{
 			LOGGER.warn(e.getMessage());
 		}
 	}
 
+	@Override
+	protected void finalize() throws Throwable
+	{
+		super.finalize();
+		closeConnectionSource();
+	}
 }
 

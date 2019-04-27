@@ -77,15 +77,15 @@ public class RootController
 	@FXML
 	private void displayAllBooksView(ActionEvent event)
 	{
-		//TODO
-		System.out.println("all books displayed");
+		Stage stage = getCurrentStage(event);
+		displayNewView(VIEW_BOOKS_FXML, VIEW_BOOKS_GREETING, stage);
 	}
 
 	@FXML
 	private void displayAllMembersView(ActionEvent event)
 	{
-		//TODO
-		System.out.println("All members displayed");
+		Stage stage = getCurrentStage(event);
+		displayNewView(VIEW_MEMBERS_FXML, VIEW_MEMBERS_GREETING, stage);
 	}
 
 	private void displayNewView(String fxmlFile, String greeting, Stage primaryStage)

@@ -32,7 +32,6 @@ public class Main extends Application
 			e.printStackTrace();
 		}
 		DBManager.initDatabase();
-
 	}
 
 	public static void main(String[] args)
