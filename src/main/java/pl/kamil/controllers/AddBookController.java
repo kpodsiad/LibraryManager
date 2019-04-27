@@ -1,10 +1,16 @@
-package controllers;
+package pl.kamil.controllers;
 
+import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.DaoManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import pl.kamil.DB.DBManager;
+import pl.kamil.models.Book;
+
+import java.sql.SQLException;
 
 public class AddBookController
 {
@@ -35,9 +41,14 @@ public class AddBookController
 	}
 
 	@FXML
-	void saveBook(ActionEvent event)
+	void saveBook(ActionEvent event) throws SQLException
 	{
-		System.out.println("Saving Book");
+		Book book = new Book();
+		book.setAuthor(authorTextField.getText());
+		book.setBookName(bookNameTextField.getText());
+		book.setPublishedDate(releaseDateTextField.getText());
+		Dao<Book, Long> accountDao = DaoManager.createDao(DBManager.getConnectionSource(), Book.class);
+		accountDao.create(book);
 	}
 
 }

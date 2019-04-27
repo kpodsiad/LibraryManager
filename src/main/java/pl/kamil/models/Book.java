@@ -1,4 +1,4 @@
-package models;
+package pl.kamil.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -20,7 +20,7 @@ public class Book
 	@DatabaseField(columnName = "NAME", canBeNull = false)
 	private String bookName;
 
-	@DatabaseField(columnName = "DATE", canBeNull = false)
+	@DatabaseField(columnName = "PUBLISHED", canBeNull = false)
 	private String publishedDate;
 
 	public Long getId()
@@ -61,5 +61,16 @@ public class Book
 	public void setPublishedDate(String publishedDate)
 	{
 		this.publishedDate = publishedDate;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Book{" +
+				"id=" + id +
+				", author='" + author + '\'' +
+				", bookName='" + bookName + '\'' +
+				", publishedDate='" + publishedDate + '\'' +
+				'}';
 	}
 }

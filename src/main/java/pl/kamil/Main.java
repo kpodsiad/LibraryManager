@@ -1,8 +1,11 @@
+package pl.kamil;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import pl.kamil.DB.DBManager;
 
 import java.io.IOException;
 
@@ -23,10 +26,12 @@ public class Main extends Application
 			primaryStage.setHeight(600);
 			primaryStage.setMinWidth(800);
 			primaryStage.show();
+
 		} catch(IOException e)
 		{
 			e.printStackTrace();
 		}
+		DBManager.initDatabase();
 
 	}
 
