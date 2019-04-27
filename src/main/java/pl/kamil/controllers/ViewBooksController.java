@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import pl.kamil.DB.DBManager;
+import pl.kamil.Utils.Converter;
 import pl.kamil.models.Book;
 import pl.kamil.models.BookFx;
 
@@ -29,6 +30,8 @@ public class ViewBooksController
 	@FXML
 	private TableColumn<BookFx, String> releaseDateColumn;
 	@FXML
+	private Button deleteBookButton;
+	@FXML
 	private Button returnButton;
 
 	@FXML
@@ -38,9 +41,27 @@ public class ViewBooksController
 		stage.close();
 	}
 
+
+	@FXML
+	void deleteBook(ActionEvent event)
+	{
+		try
+		{
+			BookFx selectedItem = tableView.getSelectionModel().getSelectedItem();
+			tableView.getItems().remove(selectedItem);
+			Dao<Book, Long> memberDao = DaoManager.createDao(DBManager.getConnectionSource(), Book.class);
+			memberDao.delete(Converter.convertBookFxToBook(selectedItem));
+		} catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+
+	}
+
 	@FXML
 	private void initialize()
 	{
+		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 		authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
 		publisherColumn.setCellValueFactory(new PropertyValueFactory<>("publisher"));
@@ -54,7 +75,7 @@ public class ViewBooksController
 		try
 		{
 			Dao<Book, Long> bookDao = DaoManager.createDao(DBManager.getConnectionSource(), Book.class);
-			List<BookFx> books = bookDao.queryForAll().stream().map(BookFx::new).collect(Collectors.toList());
+			List<BookFx> books = bookDao.queryForAll().stream().map(Converter::convertBookToBookFx).collect(Collectors.toList());
 			tableView.getItems().addAll(books);
 		} catch(SQLException e)
 		{

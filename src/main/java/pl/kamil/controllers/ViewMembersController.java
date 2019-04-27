@@ -9,6 +9,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import pl.kamil.DB.DBManager;
+import pl.kamil.Utils.Converter;
 import pl.kamil.models.Member;
 import pl.kamil.models.MemberFx;
 
@@ -21,19 +22,16 @@ public class ViewMembersController
 
 	@FXML
 	private TableView<MemberFx> tableView;
-
 	@FXML
 	private TableColumn<MemberFx, String> firstNameColumn;
-
 	@FXML
 	private TableColumn<MemberFx, String> lastNameColumn;
-
 	@FXML
 	private TableColumn<MemberFx, String> emailColumn;
-
 	@FXML
 	private TableColumn<MemberFx, String> phoneColumn;
-
+	@FXML
+	private Button deleteMemberButton;
 	@FXML
 	private Button returnButton;
 
@@ -42,6 +40,23 @@ public class ViewMembersController
 	{
 		Stage stage = (Stage) returnButton.getScene().getWindow();
 		stage.close();
+	}
+
+	@FXML
+	void deleteMember(ActionEvent event)
+	{
+		try
+		{
+			MemberFx selectedItem = tableView.getSelectionModel().getSelectedItem();
+			tableView.getItems().remove(selectedItem);
+			Dao<Member, Long> memberDao = DaoManager.createDao(DBManager.getConnectionSource(), Member.class);
+			memberDao.delete(Converter.convertMemberFxToMember(selectedItem));
+		} catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+
+
 	}
 
 	@FXML
@@ -59,8 +74,8 @@ public class ViewMembersController
 
 		try
 		{
-			Dao<Member, Long> bookDao = DaoManager.createDao(DBManager.getConnectionSource(), Member.class);
-			List<MemberFx> members = bookDao.queryForAll().stream().map(MemberFx::new).collect(Collectors.toList());
+			Dao<Member, Long> memberDao = DaoManager.createDao(DBManager.getConnectionSource(), Member.class);
+			List<MemberFx> members = memberDao.queryForAll().stream().map(MemberFx::new).collect(Collectors.toList());
 			tableView.getItems().addAll(members);
 		} catch(SQLException e)
 		{

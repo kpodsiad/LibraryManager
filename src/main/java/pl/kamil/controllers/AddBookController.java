@@ -46,14 +46,14 @@ public class AddBookController
 	}
 
 	@FXML
-	void exitCurrentWindowAndReturn(ActionEvent event)
+	private void exitCurrentWindowAndReturn(ActionEvent event)
 	{
 		Stage stage = (Stage) returnButton.getScene().getWindow();
 		stage.close();
 	}
 
 	@FXML
-	void saveBook(ActionEvent event)
+	private void saveBook(ActionEvent event)
 	{
 		try
 		{

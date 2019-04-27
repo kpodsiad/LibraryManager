@@ -1,9 +1,11 @@
 package pl.kamil.models;
 
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class BookFx
 {
+	private SimpleLongProperty id = new SimpleLongProperty();
 	private SimpleStringProperty name = new SimpleStringProperty();
 	private SimpleStringProperty author = new SimpleStringProperty();
 	private SimpleStringProperty publisher = new SimpleStringProperty();
@@ -13,22 +15,20 @@ public class BookFx
 	{
 	}
 
-	public BookFx(String name, String author, String publisher, String releaseDate)
+	public long getId()
 	{
-		setName(name);
-		setAuthor(author);
-		setPublisher(publisher);
-		setReleaseDate(releaseDate);
+		return id.get();
 	}
 
-	public BookFx(Book book)
+	public SimpleLongProperty idProperty()
 	{
-		setName(book.getBookName());
-		setAuthor(book.getAuthor());
-		setPublisher(book.getPublisher());
-		setReleaseDate(book.getReleasedDate());
+		return id;
 	}
 
+	public void setId(long id)
+	{
+		this.id.set(id);
+	}
 
 	public String getName()
 	{

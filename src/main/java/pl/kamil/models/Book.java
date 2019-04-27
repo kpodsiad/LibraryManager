@@ -6,10 +6,6 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "BOOKS")
 public class Book
 {
-	public Book()
-	{
-	}
-
 	@DatabaseField(generatedId = true)
 	private Long id;
 
@@ -24,6 +20,18 @@ public class Book
 
 	@DatabaseField(columnName = "RELEASED_DATE", canBeNull = false)
 	private String releasedDate;
+
+	public Book()
+	{
+	}
+
+	public Book(String author, String bookName, String publisher, String releasedDate)
+	{
+		this.author = author;
+		this.bookName = bookName;
+		this.publisher = publisher;
+		this.releasedDate = releasedDate;
+	}
 
 	public Long getId()
 	{

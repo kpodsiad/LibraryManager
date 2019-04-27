@@ -25,7 +25,8 @@
                 <HBox alignment="CENTER_RIGHT" maxHeight="150.0" prefHeight="150.0" prefWidth="600.0"
                       VBox.vgrow="NEVER">
                     <children>
-                        <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="150.0" text="Button"/>
+                        <Button fx:id="deleteBookButton" mnemonicParsing="false" onAction="#deleteBook"
+                                prefHeight="50.0" prefWidth="150.0" text="Delete Book"/>
                         <Button fx:id="returnButton" mnemonicParsing="false" onAction="#closeStageAndReturn"
                                 prefHeight="50.0" prefWidth="150.0" text="Return">
                             <HBox.margin>

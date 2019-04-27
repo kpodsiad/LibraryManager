@@ -1,9 +1,11 @@
 package pl.kamil.models;
 
+import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class MemberFx
 {
+	private SimpleLongProperty id = new SimpleLongProperty();
 	private SimpleStringProperty firstName = new SimpleStringProperty();
 	private SimpleStringProperty lastName = new SimpleStringProperty();
 	private SimpleStringProperty email = new SimpleStringProperty();
@@ -23,10 +25,26 @@ public class MemberFx
 
 	public MemberFx(Member member)
 	{
+		setId(member.getId());
 		setFirstName(member.getFirstName());
 		setLastName(member.getLastName());
 		setEmail(member.getEmail());
 		setPhoneNumber(member.getPhoneNumber());
+	}
+
+	public long getId()
+	{
+		return id.get();
+	}
+
+	public SimpleLongProperty idProperty()
+	{
+		return id;
+	}
+
+	public void setId(long id)
+	{
+		this.id.set(id);
 	}
 
 	public String getFirstName()
