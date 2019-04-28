@@ -1,7 +1,8 @@
-package pl.kamil.models;
+package pl.kamil.modelsFX;
 
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
+import pl.kamil.database.mapping.models.Member;
 
 public class MemberFx
 {

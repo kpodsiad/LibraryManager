@@ -8,8 +8,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import pl.kamil.DB.DBManager;
-import pl.kamil.models.Member;
+import pl.kamil.database.DBManager;
+import pl.kamil.database.mapping.models.Member;
 
 import java.sql.SQLException;
 

@@ -8,10 +8,10 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import pl.kamil.DB.DBManager;
-import pl.kamil.Utils.Converter;
-import pl.kamil.models.Member;
-import pl.kamil.models.MemberFx;
+import pl.kamil.database.DBManager;
+import pl.kamil.database.mapping.models.Member;
+import pl.kamil.modelsFX.MemberFx;
+import pl.kamil.utils.Converter;
 
 import java.sql.SQLException;
 import java.util.List;

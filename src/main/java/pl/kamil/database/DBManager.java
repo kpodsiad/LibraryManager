@@ -1,12 +1,12 @@
-package pl.kamil.DB;
+package pl.kamil.database;
 
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import pl.kamil.models.Book;
-import pl.kamil.models.Member;
+import pl.kamil.database.mapping.models.Book;
+import pl.kamil.database.mapping.models.Member;
 
 import java.io.IOException;
 import java.sql.SQLException;

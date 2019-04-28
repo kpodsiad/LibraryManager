@@ -2,16 +2,21 @@ package pl.kamil.controllers;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
+import com.j256.ormlite.stmt.PreparedQuery;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.InputEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import pl.kamil.DB.DBManager;
-import pl.kamil.Utils.Converter;
-import pl.kamil.models.Book;
-import pl.kamil.models.BookFx;
+import pl.kamil.database.DAO.BookDao;
+import pl.kamil.database.DBManager;
+import pl.kamil.database.mapping.models.Book;
+import pl.kamil.modelsFX.BookFx;
+import pl.kamil.modelsFX.BookModel;
+import pl.kamil.utils.Converter;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -33,33 +38,47 @@ public class ViewBooksController
 	private Button deleteBookButton;
 	@FXML
 	private Button returnButton;
+	@FXML
+	private TextField bookNameTextField;
+
+	private BookModel bookModel = new BookModel();
 
 	@FXML
-	void closeStageAndReturn(ActionEvent event)
+	private void closeStageAndReturn(ActionEvent event)
 	{
 		Stage stage = (Stage) returnButton.getScene().getWindow();
 		stage.close();
 	}
 
+	@FXML
+	private void deleteBook(ActionEvent event)
+	{
+		ObservableList<BookFx> selectedItems = tableView.getSelectionModel().getSelectedItems();
+		List<Book> booksToDelete = selectedItems.stream().map(Converter::convertBookFxToBook).collect(Collectors.toList());
+		tableView.getItems().removeAll(selectedItems);
+		BookDao bookDao = new BookDao();
+		bookDao.delete(booksToDelete, Book.class);
+	}
 
 	@FXML
-	void deleteBook(ActionEvent event)
+	private void searchForBook(InputEvent event)
 	{
 		try
 		{
-			BookFx selectedItem = tableView.getSelectionModel().getSelectedItem();
-			tableView.getItems().remove(selectedItem);
+			tableView.getItems().clear();
 			Dao<Book, Long> memberDao = DaoManager.createDao(DBManager.getConnectionSource(), Book.class);
-			memberDao.delete(Converter.convertBookFxToBook(selectedItem));
+			PreparedQuery<Book> query = memberDao.queryBuilder().where().like("NAME", bookNameTextField.getText() + "%").prepare();
+			List<Book> books = memberDao.query(query);
+			List<BookFx> queredBooks = books.stream().map(Converter::convertBookToBookFx).collect(Collectors.toList());
+			tableView.getItems().addAll(queredBooks);
 		} catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
-
 	}
 
 	@FXML
-	private void initialize()
+	public void initialize()
 	{
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));

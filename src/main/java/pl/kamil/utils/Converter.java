@@ -1,9 +1,9 @@
-package pl.kamil.Utils;
+package pl.kamil.utils;
 
-import pl.kamil.models.Book;
-import pl.kamil.models.BookFx;
-import pl.kamil.models.Member;
-import pl.kamil.models.MemberFx;
+import pl.kamil.database.mapping.models.Book;
+import pl.kamil.database.mapping.models.Member;
+import pl.kamil.modelsFX.BookFx;
+import pl.kamil.modelsFX.MemberFx;
 
 public class Converter
 {

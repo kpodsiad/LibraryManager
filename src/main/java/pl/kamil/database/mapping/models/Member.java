@@ -1,10 +1,10 @@
-package pl.kamil.models;
+package pl.kamil.database.mapping.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "MEMBERS")
-public class Member
+public class Member implements BaseModel
 {
 	@DatabaseField(generatedId = true)
 	private Long id;

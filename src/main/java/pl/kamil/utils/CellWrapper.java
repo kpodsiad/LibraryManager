@@ -1,4 +1,4 @@
-package pl.kamil.Utils;
+package pl.kamil.utils;
 
 public class CellWrapper
 {
