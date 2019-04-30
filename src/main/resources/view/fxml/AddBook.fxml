@@ -30,9 +30,11 @@
             </TextField>
             <HBox alignment="CENTER_RIGHT" prefHeight="94.0" prefWidth="726.0">
                <children>
-                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#saveBook" prefHeight="50.0" prefWidth="150.0" text="Save" />
-                  <Button fx:id="returnButton" layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
-                          onAction="#exitCurrentWindowAndReturn" prefHeight="50.0" prefWidth="150.0" text="Return">
+                   <Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" onAction="#saveBook"
+                           prefHeight="50.0" prefWidth="150.0" text="Save"/>
+                   <Button fx:id="returnButton" cancelButton="true" layoutX="10.0" layoutY="10.0"
+                           mnemonicParsing="false" onAction="#exitCurrentWindowAndReturn" prefHeight="50.0"
+                           prefWidth="150.0" text="Return">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>

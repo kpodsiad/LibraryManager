@@ -23,6 +23,7 @@ public class AddBookController
 	private Button saveButton;
 	@FXML
 	private Button returnButton;
+
 	private BookModel bookModel = new BookModel();
 
 	@FXML
@@ -42,7 +43,7 @@ public class AddBookController
 	}
 
 	@FXML
-	private void exitCurrentWindowAndReturn(ActionEvent event)
+	private void exitCurrentWindowAndReturn()
 	{
 		Stage stage = (Stage) returnButton.getScene().getWindow();
 		stage.close();
@@ -52,8 +53,7 @@ public class AddBookController
 	private void saveBook(ActionEvent event)
 	{
 		bookModel.saveBookInDataBase();
-		Stage stage = (Stage) saveButton.getScene().getWindow();
-		stage.close();
+		exitCurrentWindowAndReturn();
 	}
 
 }

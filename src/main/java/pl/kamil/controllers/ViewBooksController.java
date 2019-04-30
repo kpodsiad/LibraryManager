@@ -1,11 +1,9 @@
 package pl.kamil.controllers;
 
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.InputEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import pl.kamil.models.BookFx;
@@ -35,14 +33,14 @@ public class ViewBooksController
 	private BookModel bookModel = new BookModel();
 
 	@FXML
-	private void closeStageAndReturn(ActionEvent event)
+	private void closeStageAndReturn()
 	{
 		Stage stage = (Stage) returnButton.getScene().getWindow();
 		stage.close();
 	}
 
 	@FXML
-	private void deleteBook(ActionEvent event)
+	private void deleteBook()
 	{
 		ObservableList<BookFx> selectedItems = tableView.getSelectionModel().getSelectedItems();
 		bookModel.deleteBooksInDataBase(selectedItems);
@@ -50,7 +48,7 @@ public class ViewBooksController
 	}
 
 	@FXML
-	private void searchForBook(InputEvent event)
+	private void searchForBook()
 	{
 		String partialName = bookNameTextField.getText();
 		if(partialName == null)

@@ -25,7 +25,7 @@ public class BookModel
 		booksFromDataBase.addAll(bookDao.queryForAll().stream().map(Converter::convertBookToBookFx).collect(Collectors.toList()));
 	}
 
-	public void refresh()
+	public static void refresh()
 	{
 		booksFromDataBase.clear();
 		booksFromDataBase.addAll(bookDao.queryForAll().stream().map(Converter::convertBookToBookFx).collect(Collectors.toList()));
@@ -66,11 +66,6 @@ public class BookModel
 		return bookFxObjectProperty;
 	}
 
-	public void setBookFxObjectProperty(BookFx bookFxObjectProperty)
-	{
-		this.bookFxObjectProperty.set(bookFxObjectProperty);
-	}
-
 	public BookFx getBookFxObjectPropertyEdit()
 	{
 		return bookFxObjectPropertyEdit.get();
@@ -79,11 +74,6 @@ public class BookModel
 	public ObjectProperty<BookFx> bookFxObjectPropertyEditProperty()
 	{
 		return bookFxObjectPropertyEdit;
-	}
-
-	public void setBookFxObjectPropertyEdit(BookFx bookFxObjectPropertyEdit)
-	{
-		this.bookFxObjectPropertyEdit.set(bookFxObjectPropertyEdit);
 	}
 
 	public static ObservableList<BookFx> getBooksFromDataBase()

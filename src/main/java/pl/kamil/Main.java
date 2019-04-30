@@ -6,8 +6,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import pl.kamil.database.DAO.BookDao;
+import pl.kamil.database.DAO.MemberDao;
 import pl.kamil.database.DBManager;
 import pl.kamil.database.mapping.models.Book;
+import pl.kamil.database.mapping.models.Member;
 
 import java.io.IOException;
 
@@ -40,6 +42,9 @@ public class Main extends Application
 		bookDao.create(book);
 		bookDao.create(book);
 		bookDao.create(book);
+		Member member = new Member("Krzysztof", "Jarzyna", "Gansta@szczecin.com", "666666666");
+		MemberDao memberDao = new MemberDao();
+		memberDao.create(member);
 	}
 
 	public static void main(String[] args)

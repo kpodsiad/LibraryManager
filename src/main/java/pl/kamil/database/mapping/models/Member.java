@@ -21,6 +21,18 @@ public class Member implements BaseModel
 	@DatabaseField(columnName = "PHONE", canBeNull = false)
 	private String phoneNumber;
 
+	public Member(String firstName, String lastName, String email, String phoneNumber)
+	{
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.phoneNumber = phoneNumber;
+	}
+
+	public Member()
+	{
+	}
+
 	public Long getId()
 	{
 		return id;

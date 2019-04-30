@@ -1,20 +1,14 @@
 package pl.kamil.controllers;
 
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import javafx.event.ActionEvent;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import pl.kamil.database.DBManager;
-import pl.kamil.database.mapping.models.Member;
 import pl.kamil.models.MemberFx;
-import pl.kamil.utils.Converter;
+import pl.kamil.models.MemberModel;
 
-import java.sql.SQLException;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class ViewMembersController
@@ -34,29 +28,39 @@ public class ViewMembersController
 	private Button deleteMemberButton;
 	@FXML
 	private Button returnButton;
+	@FXML
+	private TextField memberNameTextField;
+
+	private MemberModel memberModel = new MemberModel();
 
 	@FXML
-	void closeStageAndReturn(ActionEvent event)
+	void closeStageAndReturn()
 	{
 		Stage stage = (Stage) returnButton.getScene().getWindow();
 		stage.close();
 	}
 
 	@FXML
-	void deleteMember(ActionEvent event)
+	void deleteMember()
 	{
-		try
-		{
-			MemberFx selectedItem = tableView.getSelectionModel().getSelectedItem();
-			tableView.getItems().remove(selectedItem);
-			Dao<Member, Long> memberDao = DaoManager.createDao(DBManager.getConnectionSource(), Member.class);
-			memberDao.delete(Converter.convertMemberFxToMember(selectedItem));
-		} catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
+		ObservableList<MemberFx> selectedItems = tableView.getSelectionModel().getSelectedItems();
+		memberModel.deleteBooksInDataBase(selectedItems);
+		tableView.getItems().removeAll(selectedItems);
+	}
 
+	@FXML
+	void searchForMember()
+	{
+		String partialName = memberNameTextField.getText();
+		if(partialName == null)
+			return;
 
+		tableView.getItems().clear();
+
+		if(partialName.equals(""))
+			tableView.getItems().addAll(MemberModel.getMembersFromDataBase());
+		else
+			tableView.getItems().addAll(MemberModel.getMembersFromDataBase().stream().filter(member -> member.getFirstName().concat(member.getLastName()).contains(partialName)).collect(Collectors.toList()));
 	}
 
 	@FXML
@@ -72,15 +76,8 @@ public class ViewMembersController
 		makeCellsWrap(emailColumn);
 		makeCellsWrap(phoneColumn);
 
-		try
-		{
-			Dao<Member, Long> memberDao = DaoManager.createDao(DBManager.getConnectionSource(), Member.class);
-			List<MemberFx> members = memberDao.queryForAll().stream().map(MemberFx::new).collect(Collectors.toList());
-			tableView.getItems().addAll(members);
-		} catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
+		tableView.getItems().clear();
+		tableView.getItems().addAll(MemberModel.getMembersFromDataBase());
 	}
 
 	private void makeCellsWrap(TableColumn<MemberFx, String> column)
@@ -96,5 +93,4 @@ public class ViewMembersController
 			return cell;
 		});
 	}
-
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
@@ -10,7 +10,7 @@
         <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <TableView fx:id="tableView" prefHeight="600.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
+                <TableView fx:id="tableView" prefHeight="520.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="nameColumn" maxWidth="300.0" minWidth="100.0" prefWidth="200.0"
                                      text="Book Name"/>
@@ -22,16 +22,17 @@
                                      prefWidth="200.0" text="Release date"/>
                     </columns>
                 </TableView>
-                <AnchorPane VBox.vgrow="NEVER">
+                <AnchorPane maxHeight="80.0" prefHeight="80.0" prefWidth="780.0" VBox.vgrow="NEVER">
                     <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                     </VBox.margin>
                     <children>
-                        <VBox alignment="CENTER" prefHeight="65.0" prefWidth="279.0" AnchorPane.bottomAnchor="0.0"
+                        <VBox alignment="CENTER" prefHeight="75.0" prefWidth="347.0" AnchorPane.bottomAnchor="0.0"
                               AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
                                 <TextField fx:id="bookNameTextField" onInputMethodTextChanged="#searchForBook"
-                                           onKeyReleased="#searchForBook" promptText="Book name to search">
+                                           onKeyReleased="#searchForBook" onMouseClicked="#searchForBook"
+                                           promptText="Book name to search">
                                     <VBox.margin>
                                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                                     </VBox.margin>
@@ -41,24 +42,31 @@
                                 <Insets/>
                             </opaqueInsets>
                         </VBox>
-                        <VBox alignment="CENTER_RIGHT" layoutX="180.0" prefWidth="382.0" AnchorPane.bottomAnchor="0.0"
-                              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <VBox alignment="CENTER_RIGHT" layoutX="180.0" prefHeight="75.0" prefWidth="382.0"
+                              AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <HBox alignment="CENTER_RIGHT" maxHeight="150.0" maxWidth="300.0" prefHeight="150.0"
-                                      prefWidth="300.0" VBox.vgrow="ALWAYS">
+                                <HBox alignment="CENTER_RIGHT" maxHeight="150.0" prefHeight="150.0" prefWidth="300.0"
+                                      VBox.vgrow="ALWAYS">
                                     <children>
-                                        <Button fx:id="deleteBookButton" mnemonicParsing="false" onAction="#deleteBook"
-                                                prefHeight="50.0" prefWidth="150.0" text="Delete Book"/>
-                                        <Button fx:id="returnButton" mnemonicParsing="false"
-                                                onAction="#closeStageAndReturn" prefHeight="50.0" prefWidth="150.0"
-                                                text="Return">
+                                        <Button fx:id="deleteBookButton" minHeight="50.0" minWidth="150.0"
+                                                mnemonicParsing="false" onAction="#deleteBook" prefHeight="50.0"
+                                                prefWidth="150.0" text="Delete Book"/>
+                                        <Button fx:id="returnButton" cancelButton="true" minHeight="50.0"
+                                                minWidth="150.0" mnemonicParsing="false" onAction="#closeStageAndReturn"
+                                                prefHeight="50.0" prefWidth="150.0" text="Return">
                                             <HBox.margin>
                                                 <Insets right="10.0"/>
                                             </HBox.margin>
                                         </Button>
                                     </children>
+                                    <VBox.margin>
+                                        <Insets/>
+                                    </VBox.margin>
                                 </HBox>
                             </children>
+                            <padding>
+                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                            </padding>
                         </VBox>
                     </children>
                 </AnchorPane>
