@@ -1,8 +1,5 @@
 package pl.kamil.controllers;
 
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.DaoManager;
-import com.j256.ormlite.stmt.PreparedQuery;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,15 +8,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.InputEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import pl.kamil.database.DAO.BookDao;
-import pl.kamil.database.DBManager;
-import pl.kamil.database.mapping.models.Book;
-import pl.kamil.modelsFX.BookFx;
-import pl.kamil.modelsFX.BookModel;
-import pl.kamil.utils.Converter;
+import pl.kamil.models.BookFx;
+import pl.kamil.models.BookModel;
 
-import java.sql.SQLException;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class ViewBooksController
@@ -54,27 +45,23 @@ public class ViewBooksController
 	private void deleteBook(ActionEvent event)
 	{
 		ObservableList<BookFx> selectedItems = tableView.getSelectionModel().getSelectedItems();
-		List<Book> booksToDelete = selectedItems.stream().map(Converter::convertBookFxToBook).collect(Collectors.toList());
+		bookModel.deleteBooksInDataBase(selectedItems);
 		tableView.getItems().removeAll(selectedItems);
-		BookDao bookDao = new BookDao();
-		bookDao.delete(booksToDelete, Book.class);
 	}
 
 	@FXML
 	private void searchForBook(InputEvent event)
 	{
-		try
-		{
-			tableView.getItems().clear();
-			Dao<Book, Long> memberDao = DaoManager.createDao(DBManager.getConnectionSource(), Book.class);
-			PreparedQuery<Book> query = memberDao.queryBuilder().where().like("NAME", bookNameTextField.getText() + "%").prepare();
-			List<Book> books = memberDao.query(query);
-			List<BookFx> queredBooks = books.stream().map(Converter::convertBookToBookFx).collect(Collectors.toList());
-			tableView.getItems().addAll(queredBooks);
-		} catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
+		String partialName = bookNameTextField.getText();
+		if(partialName == null)
+			return;
+
+		tableView.getItems().clear();
+
+		if(partialName.equals(""))
+			tableView.getItems().addAll(BookModel.getBooksFromDataBase());
+		else
+			tableView.getItems().addAll(BookModel.getBooksFromDataBase().stream().filter(book -> book.getName().contains(partialName)).collect(Collectors.toList()));
 	}
 
 	@FXML
@@ -91,15 +78,8 @@ public class ViewBooksController
 		makeCellsWrap(publisherColumn);
 		makeCellsWrap(releaseDateColumn);
 
-		try
-		{
-			Dao<Book, Long> bookDao = DaoManager.createDao(DBManager.getConnectionSource(), Book.class);
-			List<BookFx> books = bookDao.queryForAll().stream().map(Converter::convertBookToBookFx).collect(Collectors.toList());
-			tableView.getItems().addAll(books);
-		} catch(SQLException e)
-		{
-			e.printStackTrace();
-		}
+		tableView.getItems().clear();
+		tableView.getItems().addAll(BookModel.getBooksFromDataBase());
 	}
 
 	private void makeCellsWrap(TableColumn<BookFx, String> column)

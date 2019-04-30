@@ -2,8 +2,8 @@ package pl.kamil.utils;
 
 import pl.kamil.database.mapping.models.Book;
 import pl.kamil.database.mapping.models.Member;
-import pl.kamil.modelsFX.BookFx;
-import pl.kamil.modelsFX.MemberFx;
+import pl.kamil.models.BookFx;
+import pl.kamil.models.MemberFx;
 
 public class Converter
 {

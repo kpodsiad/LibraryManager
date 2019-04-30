@@ -6,29 +6,24 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import pl.kamil.database.DAO.BookDao;
-import pl.kamil.database.mapping.models.Book;
+import pl.kamil.models.BookModel;
 
 public class AddBookController
 {
 
 	@FXML
 	private TextField bookNameTextField;
-
 	@FXML
 	private TextField authorTextField;
-
 	@FXML
 	private TextField publisherTextField;
-
 	@FXML
 	private TextField releaseDateTextField;
-
 	@FXML
 	private Button saveButton;
-
 	@FXML
 	private Button returnButton;
+	private BookModel bookModel = new BookModel();
 
 	@FXML
 	private void initialize()
@@ -39,6 +34,11 @@ public class AddBookController
 								.or(Bindings.isEmpty(publisherTextField.textProperty())
 										.or(Bindings.isEmpty(releaseDateTextField.textProperty())
 										))));
+		//TODO validation
+		bookModel.getBookFxObjectProperty().nameProperty().bind(bookNameTextField.textProperty());
+		bookModel.getBookFxObjectProperty().authorProperty().bind(authorTextField.textProperty());
+		bookModel.getBookFxObjectProperty().publisherProperty().bind(publisherTextField.textProperty());
+		bookModel.getBookFxObjectProperty().releaseDateProperty().bind(releaseDateTextField.textProperty());
 	}
 
 	@FXML
@@ -51,14 +51,7 @@ public class AddBookController
 	@FXML
 	private void saveBook(ActionEvent event)
 	{
-		Book book = new Book();
-		book.setAuthor(authorTextField.getText());
-		book.setBookName(bookNameTextField.getText());
-		book.setPublisher(publisherTextField.getText());
-		book.setReleasedDate(releaseDateTextField.getText());
-		BookDao bookDao = new BookDao();
-		bookDao.createOrUpdate(book);
-
+		bookModel.saveBookInDataBase();
 		Stage stage = (Stage) saveButton.getScene().getWindow();
 		stage.close();
 	}

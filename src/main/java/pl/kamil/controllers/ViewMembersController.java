@@ -10,7 +10,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import pl.kamil.database.DBManager;
 import pl.kamil.database.mapping.models.Member;
-import pl.kamil.modelsFX.MemberFx;
+import pl.kamil.models.MemberFx;
 import pl.kamil.utils.Converter;
 
 import java.sql.SQLException;

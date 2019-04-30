@@ -1,4 +1,4 @@
-package pl.kamil.modelsFX;
+package pl.kamil.models;
 
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;

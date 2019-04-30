@@ -19,9 +19,9 @@ public abstract class CommonDao<T extends BaseModel, K>
 	private final ConnectionSource connectionSource;
 	private final Class<T> type;
 
-	public CommonDao(ConnectionSource connectionSource, Class<T> type)
+	public CommonDao(Class<T> type)
 	{
-		this.connectionSource = connectionSource;
+		this.connectionSource = DBManager.getConnectionSource();
 		this.type = type;
 	}
 
@@ -38,38 +38,35 @@ public abstract class CommonDao<T extends BaseModel, K>
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends BaseModel, K> void create(BaseModel baseModel)
+	public void create(T baseModel)
 	{
 		try
 		{
-			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, (Class<T>) baseModel.getClass());
-			commonDao.create((T) baseModel);
+			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
+			commonDao.create(baseModel);
 		} catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends BaseModel, K> void create(Collection<? extends BaseModel> baseModels, Class<? extends BaseModel> cls)
+	public void create(Collection<T> baseModels)
 	{
 		try
 		{
-			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, (Class<T>) cls);
-			commonDao.create((Collection<T>) baseModels);
+			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
+			commonDao.create(baseModels);
 		} catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends BaseModel, K> void delete(BaseModel baseModel)
+	public void delete(T baseModel)
 	{
 		try
 		{
-			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, (Class<T>) baseModel.getClass());
+			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
 			commonDao.delete((T) baseModel);
 		} catch(SQLException e)
 		{
@@ -77,39 +74,36 @@ public abstract class CommonDao<T extends BaseModel, K>
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends BaseModel, K> void delete(Collection<? extends BaseModel> baseModels, Class<? extends BaseModel> cls)
+	public void delete(Collection<T> baseModels)
 	{
 		try
 		{
-			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, (Class<T>) cls);
-			commonDao.delete((Collection<T>) baseModels);
+			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
+			commonDao.delete(baseModels);
 		} catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends BaseModel, K> void deleteById(Class<T> cls, Long id)
+	public void deleteById(K id)
 	{
 		try
 		{
-			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, cls);
-			commonDao.deleteById((K) id);
+			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
+			commonDao.deleteById(id);
 		} catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends BaseModel, K> Optional<T> query(BaseModel baseModel)
+	public Optional<T> query(T baseModel)
 	{
 		try
 		{
-			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, (Class<T>) baseModel.getClass());
-			return Optional.ofNullable(commonDao.queryForSameId((T) baseModel));
+			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
+			return Optional.ofNullable(commonDao.queryForSameId(baseModel));
 
 		} catch(SQLException e)
 		{
@@ -118,20 +112,18 @@ public abstract class CommonDao<T extends BaseModel, K>
 		return Optional.empty();
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends BaseModel, K> Collection<T> queryForAll(Class<T> cls)
+	public Collection<T> queryForAll()
 	{
-		T queriedItem = null;
 		try
 		{
-			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, (Class<T>) cls);
+			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
 			return commonDao.queryForAll();
 
 		} catch(SQLException e)
 		{
 			e.printStackTrace();
 		}
-		return Collections.EMPTY_LIST;
+		return Collections.emptyList();
 	}
 
 	@Override
