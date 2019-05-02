@@ -6,6 +6,7 @@ import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 import pl.kamil.database.mapping.models.Book;
+import pl.kamil.database.mapping.models.Loan;
 import pl.kamil.database.mapping.models.Member;
 
 import java.io.IOException;
@@ -69,6 +70,7 @@ public class DBManager
 		{
 			TableUtils.createTableIfNotExists(connectionSource, Book.class);
 			TableUtils.createTableIfNotExists(connectionSource, Member.class);
+			TableUtils.createTableIfNotExists(connectionSource, Loan.class);
 		} catch(SQLException e)
 		{
 			LOGGER.warn(e.getMessage());

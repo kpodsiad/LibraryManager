@@ -1,8 +1,11 @@
 package pl.kamil.utils;
 
 import pl.kamil.database.mapping.models.Book;
+import pl.kamil.database.mapping.models.Loan;
 import pl.kamil.database.mapping.models.Member;
 import pl.kamil.models.BookFx;
+import pl.kamil.models.BookModel;
+import pl.kamil.models.LoanFx;
 import pl.kamil.models.MemberFx;
 
 public class Converter
@@ -57,5 +60,17 @@ public class Converter
 		bookFx.setReleaseDate(book.getReleasedDate());
 
 		return bookFx;
+	}
+
+	public static LoanFx convertLoanToLoanFx(Loan loan)
+	{
+		LoanFx loanFx = new LoanFx();
+
+		loanFx.setId(loan.getId());
+		loanFx.setBookId(loan.getBookId());
+		loanFx.setMemberId(loan.getMemberId());
+		BookModel.getBooksFromDataBase().stream().filter(book -> book.getId() == loan.getBookId()).findFirst().ifPresent(bookFx -> loanFx.setTitle(bookFx.getName()));
+
+		return loanFx;
 	}
 }

@@ -5,24 +5,27 @@
 <?import javafx.scene.layout.*?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
             prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="pl.kamil.controllers.ViewBooksController">
+            fx:controller="pl.kamil.controllers.ViewLoansController">
     <children>
         <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <TableView fx:id="tableView" prefHeight="520.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="idColumn" maxWidth="300.0" minWidth="64.0" prefWidth="75.0" text="Book ID"/>
-                        <TableColumn fx:id="nameColumn" maxWidth="300.0" minWidth="100.0" prefWidth="180.0"
-                                     text="Book Name"/>
-                        <TableColumn fx:id="authorColumn" maxWidth="300.0" minWidth="100.0" prefWidth="180.0"
-                                     text="Author"/>
-                        <TableColumn fx:id="publisherColumn" editable="false" maxWidth="300.0" minWidth="100.0"
-                                     prefWidth="180.0" text="Publisher"/>
-                        <TableColumn fx:id="releaseDateColumn" editable="false" maxWidth="300.0" minWidth="100.0"
-                                     prefWidth="180.0" text="Release date"/>
-                    </columns>
-                </TableView>
+                <HBox VBox.vgrow="ALWAYS">
+                    <children>
+                        <TableView fx:id="tableView" prefHeight="520.0" prefWidth="800.0">
+                            <columns>
+                                <TableColumn fx:id="loanIdColumn" maxWidth="300.0" minWidth="100.0" prefWidth="199.0"
+                                             text="Loan ID"/>
+                                <TableColumn fx:id="bookTitleColumn" maxWidth="300.0" minWidth="100.0" prefWidth="199.0"
+                                             text="Book Title"/>
+                                <TableColumn fx:id="bookIdColumn" maxWidth="300.0" minWidth="100.0" prefWidth="199.0"
+                                             text="Book ID"/>
+                                <TableColumn fx:id="memberIdColumn" editable="false" maxWidth="300.0" minWidth="100.0"
+                                             prefWidth="199.0" text="Member ID"/>
+                            </columns>
+                        </TableView>
+                    </children>
+                </HBox>
                 <AnchorPane maxHeight="80.0" prefHeight="80.0" prefWidth="780.0" VBox.vgrow="NEVER">
                     <VBox.margin>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
@@ -31,9 +34,9 @@
                         <VBox alignment="CENTER" prefHeight="75.0" prefWidth="347.0" AnchorPane.bottomAnchor="0.0"
                               AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                             <children>
-                                <TextField fx:id="bookNameTextField" onInputMethodTextChanged="#searchForBook"
+                                <TextField fx:id="bookTitleTextField" onInputMethodTextChanged="#searchForBook"
                                            onKeyReleased="#searchForBook" onMouseClicked="#searchForBook"
-                                           promptText="Book name to search">
+                                           promptText="Book title to search">
                                     <VBox.margin>
                                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
                                     </VBox.margin>
@@ -49,9 +52,6 @@
                                 <HBox alignment="CENTER_RIGHT" maxHeight="150.0" prefHeight="150.0" prefWidth="300.0"
                                       VBox.vgrow="ALWAYS">
                                     <children>
-                                        <Button fx:id="deleteBookButton" minHeight="50.0" minWidth="150.0"
-                                                mnemonicParsing="false" onAction="#deleteBook" prefHeight="50.0"
-                                                prefWidth="150.0" text="Delete Book"/>
                                         <Button fx:id="returnButton" cancelButton="true" minHeight="50.0"
                                                 minWidth="150.0" mnemonicParsing="false" onAction="#closeStageAndReturn"
                                                 prefHeight="50.0" prefWidth="150.0" text="Return">

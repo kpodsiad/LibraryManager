@@ -19,11 +19,14 @@ public class RootController
 	private static final String ADD_MEMBER_FXML = "/view/fxml/AddMember.fxml";
 	private static final String VIEW_BOOKS_FXML = "/view/fxml/ViewBooks.fxml";
 	private static final String VIEW_MEMBERS_FXML = "/view/fxml/ViewMembers.fxml";
+	private static final String VIEW_LOANS_FXML = "/view/fxml/ViewLoans.fxml";
 
 	private static final String ADD_BOOK_GREETING = "Add Book";
 	private static final String ADD_MEMBER_GREETING = "Add Member";
 	private static final String VIEW_BOOKS_GREETING = "View all books";
 	private static final String VIEW_MEMBERS_GREETING = "View all members";
+	private static final String VIEW_LOANS_GREETING = "View all loans";
+
 
 	@FXML
 	private TextField memberIdTextField;
@@ -86,6 +89,13 @@ public class RootController
 	{
 		Stage stage = getCurrentStage(event);
 		displayNewView(VIEW_MEMBERS_FXML, VIEW_MEMBERS_GREETING, stage);
+	}
+
+	@FXML
+	void displayAllLoansView(ActionEvent event)
+	{
+		Stage stage = getCurrentStage(event);
+		displayNewView(VIEW_LOANS_FXML, VIEW_LOANS_GREETING, stage);
 	}
 
 	private void displayNewView(String fxmlFile, String greeting, Stage primaryStage)

@@ -16,6 +16,8 @@ public class ViewBooksController
 	@FXML
 	private TableView<BookFx> tableView;
 	@FXML
+	private TableColumn<BookFx, Long> idColumn;
+	@FXML
 	private TableColumn<BookFx, String> nameColumn;
 	@FXML
 	private TableColumn<BookFx, String> authorColumn;
@@ -66,6 +68,7 @@ public class ViewBooksController
 	public void initialize()
 	{
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 		authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
 		publisherColumn.setCellValueFactory(new PropertyValueFactory<>("publisher"));

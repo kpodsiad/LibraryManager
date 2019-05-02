@@ -6,9 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import pl.kamil.database.DAO.BookDao;
+import pl.kamil.database.DAO.LoanDao;
 import pl.kamil.database.DAO.MemberDao;
 import pl.kamil.database.DBManager;
 import pl.kamil.database.mapping.models.Book;
+import pl.kamil.database.mapping.models.Loan;
 import pl.kamil.database.mapping.models.Member;
 
 import java.io.IOException;
@@ -35,7 +37,7 @@ public class Main extends Application
 		}
 		DBManager.initDatabase();
 
-		Book book = new Book("Tytul", "Autor", "Wydawnictwo", "Rok");
+		Book book = new Book("Tytul", "Autor", "Wydawnictwo Bardzo Fajne", "Rok");
 		BookDao bookDao = new BookDao();
 		bookDao.create(book);
 		bookDao.create(book);
@@ -45,6 +47,9 @@ public class Main extends Application
 		Member member = new Member("Krzysztof", "Jarzyna", "Gansta@szczecin.com", "666666666");
 		MemberDao memberDao = new MemberDao();
 		memberDao.create(member);
+		LoanDao loanDao = new LoanDao();
+		Loan loan = new Loan(36L, 10L);
+		loanDao.create(loan);
 	}
 
 	public static void main(String[] args)

@@ -25,13 +25,13 @@ public abstract class CommonDao<T extends BaseModel, K>
 		this.type = type;
 	}
 
-	@SuppressWarnings("unchecked")
-	public void createOrUpdate(BaseModel baseModel)
+
+	public void createOrUpdate(T baseModel)
 	{
 		try
 		{
 			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
-			commonDao.createOrUpdate((T) baseModel);
+			commonDao.createOrUpdate(baseModel);
 		} catch(SQLException e)
 		{
 			e.printStackTrace();
@@ -124,12 +124,5 @@ public abstract class CommonDao<T extends BaseModel, K>
 			e.printStackTrace();
 		}
 		return Collections.emptyList();
-	}
-
-	@Override
-	protected void finalize() throws Throwable
-	{
-		super.finalize();
-		DBManager.closeConnectionSource();
 	}
 }
