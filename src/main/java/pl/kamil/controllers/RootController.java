@@ -75,6 +75,7 @@ public class RootController
 	{
 		Stage stage = getCurrentStage(event);
 		displayNewView(ADD_MEMBER_FXML, ADD_MEMBER_GREETING, stage);
+		//TODO uzyc FXMLloadera i przekazac referencje do modelu przez settera
 	}
 
 	@FXML

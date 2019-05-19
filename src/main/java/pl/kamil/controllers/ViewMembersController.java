@@ -66,6 +66,7 @@ public class ViewMembersController
 	@FXML
 	private void initialize()
 	{
+		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
 		lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 		emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));

@@ -37,6 +37,7 @@ public class Main extends Application
 		}
 		DBManager.initDatabase();
 
+
 		Book book = new Book("Tytul", "Autor", "Wydawnictwo Bardzo Fajne", "Rok");
 		BookDao bookDao = new BookDao();
 		bookDao.create(book);
@@ -44,8 +45,9 @@ public class Main extends Application
 		bookDao.create(book);
 		bookDao.create(book);
 		bookDao.create(book);
-		Member member = new Member("Krzysztof", "Jarzyna", "Gansta@szczecin.com", "666666666");
+		Member member = new Member("Krzysztof", "Jarzyna", "KrzysiuJarzyna@interia.com", "666666666");
 		MemberDao memberDao = new MemberDao();
+		memberDao.create(member);
 		memberDao.create(member);
 		LoanDao loanDao = new LoanDao();
 		Loan loan = new Loan(36L, 10L);
