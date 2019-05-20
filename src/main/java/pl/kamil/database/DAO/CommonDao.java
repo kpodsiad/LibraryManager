@@ -6,14 +6,14 @@ import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.logger.LoggerFactory;
 import com.j256.ormlite.support.ConnectionSource;
 import pl.kamil.database.DBManager;
-import pl.kamil.database.mapping.models.BaseModel;
+import pl.kamil.database.mapping.models.MappingModel;
 
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 
-public abstract class CommonDao<T extends BaseModel, K>
+public abstract class CommonDao<T extends MappingModel, K>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommonDao.class);
 	private final ConnectionSource connectionSource;
@@ -96,6 +96,20 @@ public abstract class CommonDao<T extends BaseModel, K>
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public Optional<T> queryForId(K id)
+	{
+		try
+		{
+			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
+			return Optional.ofNullable(commonDao.queryForId(id));
+
+		} catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		return Optional.empty();
 	}
 
 	public Optional<T> query(T baseModel)

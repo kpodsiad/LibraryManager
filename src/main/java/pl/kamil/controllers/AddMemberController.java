@@ -23,21 +23,12 @@ public class AddMemberController
 	@FXML
 	private Button returnButton;
 
-	private MemberModel memberModel = new MemberModel();
+	private MemberModel memberModel;
 
 	@FXML
 	private void initialize()
 	{
-		saveButton.disableProperty().bind(
-				Bindings.isEmpty(firstNameTextField.textProperty())
-						.or(Bindings.isEmpty(lastNameTextField.textProperty())
-								.or(Bindings.isEmpty(phoneNumberTextField.textProperty())
-										.or(Bindings.isEmpty(emailTextField.textProperty())
-										))));
-		memberModel.getMemberFxObjectProperty().firstNameProperty().bind(firstNameTextField.textProperty());
-		memberModel.getMemberFxObjectProperty().lastNameProperty().bind(lastNameTextField.textProperty());
-		memberModel.getMemberFxObjectProperty().phoneNumberProperty().bind(phoneNumberTextField.textProperty());
-		memberModel.getMemberFxObjectProperty().emailProperty().bind(emailTextField.textProperty());
+
 	}
 
 	@FXML
@@ -54,4 +45,23 @@ public class AddMemberController
 		exitCurrentWindowAndReturn();
 	}
 
+	public void init()
+	{
+		saveButton.disableProperty().bind(
+				Bindings.isEmpty(firstNameTextField.textProperty())
+						.or(Bindings.isEmpty(lastNameTextField.textProperty())
+								.or(Bindings.isEmpty(phoneNumberTextField.textProperty())
+										.or(Bindings.isEmpty(emailTextField.textProperty())
+										))));
+
+		memberModel.getMemberFxObjectProperty().firstNameProperty().bind(firstNameTextField.textProperty());
+		memberModel.getMemberFxObjectProperty().lastNameProperty().bind(lastNameTextField.textProperty());
+		memberModel.getMemberFxObjectProperty().phoneNumberProperty().bind(phoneNumberTextField.textProperty());
+		memberModel.getMemberFxObjectProperty().emailProperty().bind(emailTextField.textProperty());
+	}
+
+	public void setModel(MemberModel memberModel)
+	{
+		this.memberModel = memberModel;
+	}
 }

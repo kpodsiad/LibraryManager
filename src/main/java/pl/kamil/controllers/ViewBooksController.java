@@ -6,10 +6,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import pl.kamil.models.BookFx;
 import pl.kamil.models.BookModel;
-
-import java.util.stream.Collectors;
 
 public class ViewBooksController
 {
@@ -32,13 +31,23 @@ public class ViewBooksController
 	@FXML
 	private TextField bookNameTextField;
 
-	private BookModel bookModel = new BookModel();
+	private BookModel bookModel;
+
+	public BookModel getBookModel()
+	{
+		return bookModel;
+	}
+
+	public void setModel(BookModel bookModel)
+	{
+		this.bookModel = bookModel;
+	}
 
 	@FXML
 	private void closeStageAndReturn()
 	{
 		Stage stage = (Stage) returnButton.getScene().getWindow();
-		stage.close();
+		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 
 	@FXML
@@ -57,11 +66,7 @@ public class ViewBooksController
 			return;
 
 		tableView.getItems().clear();
-
-		if(partialName.equals(""))
-			tableView.getItems().addAll(BookModel.getBooksFromDataBase());
-		else
-			tableView.getItems().addAll(BookModel.getBooksFromDataBase().stream().filter(book -> book.getName().contains(partialName)).collect(Collectors.toList()));
+		tableView.getItems().addAll(bookModel.searchForBook(partialName));
 	}
 
 	@FXML
@@ -78,9 +83,12 @@ public class ViewBooksController
 		makeCellsWrap(authorColumn);
 		makeCellsWrap(publisherColumn);
 		makeCellsWrap(releaseDateColumn);
+	}
 
+	public void init()
+	{
 		tableView.getItems().clear();
-		tableView.getItems().addAll(BookModel.getBooksFromDataBase());
+		tableView.getItems().addAll(bookModel.getBooksFromDataBase());
 	}
 
 	private void makeCellsWrap(TableColumn<BookFx, String> column)

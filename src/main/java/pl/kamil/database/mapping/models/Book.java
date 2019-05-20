@@ -4,7 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
 @DatabaseTable(tableName = "BOOKS")
-public class Book implements BaseModel
+public class Book implements MappingModel
 {
 	@DatabaseField(generatedId = true)
 	private Long id;

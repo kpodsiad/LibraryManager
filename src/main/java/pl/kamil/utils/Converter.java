@@ -4,7 +4,6 @@ import pl.kamil.database.mapping.models.Book;
 import pl.kamil.database.mapping.models.Loan;
 import pl.kamil.database.mapping.models.Member;
 import pl.kamil.models.BookFx;
-import pl.kamil.models.BookModel;
 import pl.kamil.models.LoanFx;
 import pl.kamil.models.MemberFx;
 
@@ -65,12 +64,17 @@ public class Converter
 	public static LoanFx convertLoanToLoanFx(Loan loan)
 	{
 		LoanFx loanFx = new LoanFx();
-
+		loanFx.setBookId(loan.getBook().getId());
+		loanFx.setTitle(loan.getBook().getBookName());
+		loanFx.setMemberId(loan.getMember().getId());
 		loanFx.setId(loan.getId());
-		loanFx.setBookId(loan.getBookId());
-		loanFx.setMemberId(loan.getMemberId());
-		BookModel.getBooksFromDataBase().stream().filter(book -> book.getId() == loan.getBookId()).findFirst().ifPresent(bookFx -> loanFx.setTitle(bookFx.getName()));
-
 		return loanFx;
+	}
+
+	public static Loan convertLoanFxToLoan(LoanFx loanFx)
+	{
+		Loan loan = new Loan();
+
+		return loan;
 	}
 }

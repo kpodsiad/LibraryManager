@@ -6,10 +6,9 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import pl.kamil.models.MemberFx;
 import pl.kamil.models.MemberModel;
-
-import java.util.stream.Collectors;
 
 public class ViewMembersController
 {
@@ -31,13 +30,13 @@ public class ViewMembersController
 	@FXML
 	private TextField memberNameTextField;
 
-	private MemberModel memberModel = new MemberModel();
+	private MemberModel memberModel;
 
 	@FXML
 	void closeStageAndReturn()
 	{
 		Stage stage = (Stage) returnButton.getScene().getWindow();
-		stage.close();
+		stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 	}
 
 	@FXML
@@ -56,11 +55,7 @@ public class ViewMembersController
 			return;
 
 		tableView.getItems().clear();
-
-		if(partialName.equals(""))
-			tableView.getItems().addAll(MemberModel.getMembersFromDataBase());
-		else
-			tableView.getItems().addAll(MemberModel.getMembersFromDataBase().stream().filter(member -> member.getFirstName().concat(member.getLastName()).contains(partialName)).collect(Collectors.toList()));
+		tableView.getItems().addAll(memberModel.searchForMember(partialName.trim()));
 	}
 
 	@FXML
@@ -76,9 +71,12 @@ public class ViewMembersController
 		makeCellsWrap(lastNameColumn);
 		makeCellsWrap(emailColumn);
 		makeCellsWrap(phoneColumn);
+	}
 
+	public void init()
+	{
 		tableView.getItems().clear();
-		tableView.getItems().addAll(MemberModel.getMembersFromDataBase());
+		tableView.getItems().addAll(memberModel.getMembersFromDataBase());
 	}
 
 	private void makeCellsWrap(TableColumn<MemberFx, String> column)
@@ -93,5 +91,10 @@ public class ViewMembersController
 			text.textProperty().bind(cell.itemProperty());
 			return cell;
 		});
+	}
+
+	public void setModel(MemberModel memberModel)
+	{
+		this.memberModel = memberModel;
 	}
 }

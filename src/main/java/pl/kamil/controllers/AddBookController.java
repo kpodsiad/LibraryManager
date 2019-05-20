@@ -1,6 +1,7 @@
 package pl.kamil.controllers;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,22 +25,11 @@ public class AddBookController
 	@FXML
 	private Button returnButton;
 
-	private BookModel bookModel = new BookModel();
+	private BookModel bookModel;
 
 	@FXML
 	private void initialize()
 	{
-		saveButton.disableProperty().bind(
-				Bindings.isEmpty(bookNameTextField.textProperty())
-						.or(Bindings.isEmpty(authorTextField.textProperty())
-								.or(Bindings.isEmpty(publisherTextField.textProperty())
-										.or(Bindings.isEmpty(releaseDateTextField.textProperty())
-										))));
-		//TODO validation
-		bookModel.getBookFxObjectProperty().nameProperty().bind(bookNameTextField.textProperty());
-		bookModel.getBookFxObjectProperty().authorProperty().bind(authorTextField.textProperty());
-		bookModel.getBookFxObjectProperty().publisherProperty().bind(publisherTextField.textProperty());
-		bookModel.getBookFxObjectProperty().releaseDateProperty().bind(releaseDateTextField.textProperty());
 	}
 
 	@FXML
@@ -56,5 +46,27 @@ public class AddBookController
 		exitCurrentWindowAndReturn();
 	}
 
+	public void init()
+	{
+		saveButton.disableProperty().bind(
+				Bindings.isEmpty(authorTextField.textProperty())
+						.or(Bindings.isEmpty(authorTextField.textProperty())
+								.or(Bindings.isEmpty(publisherTextField.textProperty())
+										.or(Bindings.isEmpty(releaseDateTextField.textProperty())
+										))));
+		//TODO validation
+		SimpleBooleanProperty titleValid = new SimpleBooleanProperty();
+
+		bookModel.getBookFxObjectProperty().nameProperty().bind(bookNameTextField.textProperty());
+		bookModel.getBookFxObjectProperty().authorProperty().bind(authorTextField.textProperty());
+		bookModel.getBookFxObjectProperty().publisherProperty().bind(publisherTextField.textProperty());
+		bookModel.getBookFxObjectProperty().releaseDateProperty().bind(releaseDateTextField.textProperty());
+	}
+
+	public void setModel(BookModel bookModel)
+	{
+		this.bookModel = bookModel;
+		System.out.println("Ustawianie");
+	}
 }
 
