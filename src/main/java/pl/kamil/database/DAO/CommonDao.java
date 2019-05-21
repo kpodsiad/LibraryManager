@@ -139,4 +139,9 @@ public abstract class CommonDao<T extends MappingModel, K>
 		}
 		return Collections.emptyList();
 	}
+
+	public ConnectionSource getConnectionSource()
+	{
+		return connectionSource;
+	}
 }

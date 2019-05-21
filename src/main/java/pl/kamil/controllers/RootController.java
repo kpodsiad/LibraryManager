@@ -4,7 +4,6 @@ import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.logger.LoggerFactory;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -52,7 +51,7 @@ public class RootController
 	@FXML
 	private TextField memberIdTextField;
 	@FXML
-	private Button memberIssuedBooksButton;
+	private Button memberLoansButton;
 	@FXML
 	private TextField bookIdTextField;
 	@FXML
@@ -83,17 +82,24 @@ public class RootController
 	@FXML
 	private Label bookYearLabel;
 
+	@FXML
+	private Label memberValidLabel;
+	@FXML
+	private Label bookValidLabel;
+
 
 	@FXML
 	private void initialize()
 	{
-		memberIssuedBooksButton.disableProperty().bind(Bindings.isEmpty(memberIdTextField.textProperty()));
-		addIssueButton.disableProperty().bind(Bindings.isEmpty(memberIdTextField.textProperty()).or(Bindings.isEmpty(bookIdTextField.textProperty())));
+		//memberLoansButton.disableProperty().bind(Bindings.isEmpty(memberIdTextField.textProperty()));
+		//addIssueButton.disableProperty().bind(Bindings.isEmpty(memberIdTextField.textProperty()).or(Bindings.isEmpty(bookIdTextField.textProperty())));
+		addIssueButton.disableProperty().bind(Bindings.isEmpty(memberNameLabel.textProperty()).or(Bindings.isEmpty(bookTitleLabel.textProperty())));
 		addBookButton.disableProperty().bind(buttonsProperty);
 		addMemberButton.disableProperty().bind(buttonsProperty);
 		viewBooksButton.disableProperty().bind(buttonsProperty);
 		viewMembersButton.disableProperty().bind(buttonsProperty);
 		viewLoansButton.disableProperty().bind(buttonsProperty);
+		memberLoansButton.disableProperty().bind(Bindings.isEmpty(memberNameLabel.textProperty()));
 	}
 
 	@FXML
@@ -116,14 +122,31 @@ public class RootController
 	{
 		if(!memberIdTextField.getText().equals(""))
 		{
-			long id = Long.parseLong(memberIdTextField.getText());
-			Optional<MemberFx> optionalMemberFx = memberModel.searchForMemberById(id);
-			if(optionalMemberFx.isPresent())
-				setMemberFields(Converter.convertMemberFxToMember(optionalMemberFx.get()));
-			else
+			try
+			{
+				long id = Long.parseLong(memberIdTextField.getText());
+				memberValidLabel.setVisible(false);
+				Optional<MemberFx> optionalMemberFx = memberModel.searchForMemberById(id);
+				if(optionalMemberFx.isPresent())
+				{
+					setMemberFields(Converter.convertMemberFxToMember(optionalMemberFx.get()));
+					memberValidLabel.setVisible(false);
+				} else
+				{
+					clearMemberFields();
+				}
+			} catch(NumberFormatException e)
+			{
+				e.printStackTrace();
 				clearMemberFields();
+				memberValidLabel.setVisible(true);
+			}
+
 		} else
+		{
 			clearMemberFields();
+			memberValidLabel.setVisible(false);
+		}
 	}
 
 	private void setMemberFields(Member member)
@@ -143,14 +166,31 @@ public class RootController
 	{
 		if(!bookIdTextField.getText().equals(""))
 		{
-			long id = Long.parseLong(bookIdTextField.getText());
-			Optional<BookFx> optionalBookFx = bookModel.searchForBookById(id);
-			if(optionalBookFx.isPresent())
-				setBookFields(Converter.convertBookFxToBook(optionalBookFx.get()));
-			else
+			try
+			{
+				long id = Long.parseLong(bookIdTextField.getText());
+				bookValidLabel.setVisible(false);
+				Optional<BookFx> optionalBookFx = bookModel.searchForBookById(id);
+				if(optionalBookFx.isPresent())
+				{
+					setBookFields(Converter.convertBookFxToBook(optionalBookFx.get()));
+					bookValidLabel.setVisible(false);
+				} else
+				{
+					clearBookFields();
+				}
+			} catch(NumberFormatException e)
+			{
+				e.printStackTrace();
+				bookValidLabel.setVisible(true);
 				clearBookFields();
+			}
+
 		} else
+		{
 			clearBookFields();
+			bookValidLabel.setVisible(false);
+		}
 	}
 
 	private void clearBookFields()
@@ -167,23 +207,19 @@ public class RootController
 	}
 
 	@FXML
-	private void displayAddBookView(ActionEvent event)
+	private void displayAddBookView()
 	{
 		try
 		{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(ADD_BOOK_FXML));
+			FXMLLoader loader = getFxmlLoader(ADD_BOOK_FXML);
 			Parent root = loader.load();
 			AddBookController addBookController = loader.getController();
 			addBookController.setModel(bookModel);
 			addBookController.init();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.initOwner(primaryStage);
-			newStage.setTitle(ADD_BOOK_GREETING);
-			newStage.setScene(newScene);
-			newStage.show();
-
+			makeStageWithModality(newStage);
+			prepareStageAndShow(newScene, newStage, ADD_BOOK_GREETING);
 		} catch(IOException e)
 		{
 			e.printStackTrace();
@@ -191,23 +227,19 @@ public class RootController
 	}
 
 	@FXML
-	private void displayAllBooksView(ActionEvent event)
+	private void displayAllBooksView()
 	{
 		try
 		{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(VIEW_BOOKS_FXML));
+			FXMLLoader loader = getFxmlLoader(VIEW_BOOKS_FXML);
 			Parent root = loader.load();
 			ViewBooksController viewBooksController = loader.getController();
 			viewBooksController.setModel(bookModel);
 			viewBooksController.init();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
-			buttonsProperty.set(true);
-			newStage.setOnCloseRequest(event1 -> buttonsProperty.set(false));
-			newStage.setTitle(VIEW_BOOKS_GREETING);
-			newStage.setScene(newScene);
-			//newStage.setX();
-			newStage.show();
+			makeButtonsImpact(newStage);
+			prepareStageAndShow(newScene, newStage, VIEW_BOOKS_GREETING);
 		} catch(IOException e)
 		{
 			e.printStackTrace();
@@ -215,22 +247,19 @@ public class RootController
 	}
 
 	@FXML
-	private void displayAddMemberView(ActionEvent event)
+	private void displayAddMemberView()
 	{
 		try
 		{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(ADD_MEMBER_FXML));
+			FXMLLoader loader = getFxmlLoader(ADD_MEMBER_FXML);
 			Parent root = loader.load();
 			AddMemberController addMemberController = loader.getController();
 			addMemberController.setModel(memberModel);
 			addMemberController.init();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
-			newStage.initModality(Modality.APPLICATION_MODAL);
-			newStage.initOwner(primaryStage);
-			newStage.setTitle(ADD_MEMBER_GREETING);
-			newStage.setScene(newScene);
-			newStage.show();
+			makeStageWithModality(newStage);
+			prepareStageAndShow(newScene, newStage, ADD_MEMBER_GREETING);
 		} catch(IOException e)
 		{
 			e.printStackTrace();
@@ -238,22 +267,20 @@ public class RootController
 	}
 
 	@FXML
-	private void displayAllMembersView(ActionEvent event)
+	private void displayAllMembersView()
 	{
 		try
 		{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(VIEW_MEMBERS_FXML));
+			FXMLLoader loader = getFxmlLoader(VIEW_MEMBERS_FXML);
 			Parent root = loader.load();
 			ViewMembersController viewMembersController = loader.getController();
 			viewMembersController.setModel(memberModel);
 			viewMembersController.init();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
-			buttonsProperty.set(true);
-			newStage.setOnCloseRequest(event1 -> buttonsProperty.set(false));
-			newStage.setTitle(VIEW_MEMBERS_GREETING);
-			newStage.setScene(newScene);
-			newStage.show();
+			makeButtonsImpact(newStage);
+			prepareStageAndShow(newScene, newStage, VIEW_MEMBERS_GREETING);
+
 		} catch(IOException e)
 		{
 			e.printStackTrace();
@@ -261,22 +288,19 @@ public class RootController
 	}
 
 	@FXML
-	private void displayAllLoansView(ActionEvent event)
+	private void displayAllLoansView()
 	{
 		try
 		{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(VIEW_LOANS_FXML));
+			FXMLLoader loader = getFxmlLoader(VIEW_LOANS_FXML);
 			Parent root = loader.load();
 			ViewLoansController viewLoansController = loader.getController();
 			viewLoansController.setModel(loanModel);
 			viewLoansController.init();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
-			buttonsProperty.set(true);
-			newStage.setOnCloseRequest(event1 -> buttonsProperty.set(false));
-			newStage.setTitle(VIEW_LOANS_GREETING);
-			newStage.setScene(newScene);
-			newStage.show();
+			makeButtonsImpact(newStage);
+			prepareStageAndShow(newScene, newStage, VIEW_LOANS_GREETING);
 		} catch(IOException e)
 		{
 			e.printStackTrace();
@@ -284,26 +308,48 @@ public class RootController
 	}
 
 	@FXML
-	private void viewBooksIssuedToParticularMember(ActionEvent actionEvent)
+	private void viewBooksIssuedToParticularMember()
 	{
 		try
 		{
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(VIEW_PARTICULAR_LOANS_FXML));
+			FXMLLoader loader = getFxmlLoader(VIEW_PARTICULAR_LOANS_FXML);
 			Parent root = loader.load();
-			ViewLoansController viewLoansController = loader.getController();
-			viewLoansController.setModel(loanModel);
-			viewLoansController.init();
+			MemberLoansController memberLoansController = loader.getController();
+			memberLoansController.setModel(loanModel);
+			memberLoansController.setMemberId(Long.parseLong(memberIdTextField.getText()));
+			memberLoansController.init();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
-			buttonsProperty.set(true);
-			newStage.setOnCloseRequest(event1 -> buttonsProperty.set(false));
-			newStage.setTitle(VIEW_PARTICULAR_LOANS_GREETING);
-			newStage.setScene(newScene);
-			newStage.show();
+			makeButtonsImpact(newStage);
+			prepareStageAndShow(newScene, newStage, VIEW_PARTICULAR_LOANS_GREETING);
 		} catch(IOException e)
 		{
 			e.printStackTrace();
 		}
+	}
+
+	private FXMLLoader getFxmlLoader(String fxmlFile)
+	{
+		return new FXMLLoader(getClass().getResource(fxmlFile));
+	}
+
+	private void prepareStageAndShow(Scene newScene, Stage newStage, String addBookGreeting)
+	{
+		newStage.setTitle(addBookGreeting);
+		newStage.setScene(newScene);
+		newStage.show();
+	}
+
+	private void makeStageWithModality(Stage newStage)
+	{
+		newStage.initModality(Modality.APPLICATION_MODAL);
+		newStage.initOwner(primaryStage);
+	}
+
+	private void makeButtonsImpact(Stage newStage)
+	{
+		buttonsProperty.set(true);
+		newStage.setOnCloseRequest(event1 -> buttonsProperty.set(false));
 	}
 
 	public void setPrimaryStage(Stage primaryStage)

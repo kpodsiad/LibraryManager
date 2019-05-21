@@ -51,8 +51,9 @@
                                                                       maxWidth="-Infinity" prefHeight="200.0"
                                                                       prefWidth="300.0" HBox.hgrow="ALWAYS">
                                                                     <children>
-                                                                        <HBox alignment="CENTER" prefHeight="160.0"
-                                                                              prefWidth="270.0" VBox.vgrow="ALWAYS">
+                                                                        <HBox alignment="BOTTOM_CENTER"
+                                                                              prefHeight="85.0" prefWidth="270.0"
+                                                                              VBox.vgrow="ALWAYS">
                                                                             <children>
                                                                                 <TextField fx:id="memberIdTextField"
                                                                                            onInputMethodTextChanged="#searchForMember"
@@ -61,10 +62,20 @@
                                                                                            promptText="Member ID"/>
                                                                             </children>
                                                                         </HBox>
+                                                                        <HBox alignment="CENTER" prefHeight="38.0"
+                                                                              prefWidth="270.0">
+                                                                            <children>
+                                                                                <Label fx:id="memberValidLabel"
+                                                                                       text="Invalid id number"
+                                                                                       textFill="#f20000"
+                                                                                       visible="false"/>
+                                                                            </children>
+                                                                        </HBox>
                                                                         <HBox alignment="TOP_CENTER" prefHeight="100.0"
                                                                               prefWidth="200.0" VBox.vgrow="ALWAYS">
                                                                             <children>
-                                                                                <Button fx:id="memberIssuedBooksButton"
+                                                                                <Button fx:id="memberLoansButton"
+                                                                                        disable="true"
                                                                                         mnemonicParsing="false"
                                                                                         onAction="#viewBooksIssuedToParticularMember"
                                                                                         text="View loaned books"/>
@@ -85,7 +96,7 @@
                                                                                                 right="5.0" top="5.0"/>
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <Label fx:id="memberNameLabel" text="d"
+                                                                                <Label fx:id="memberNameLabel"
                                                                                        wrapText="true"
                                                                                        HBox.hgrow="ALWAYS">
                                                                                     <HBox.margin>
@@ -109,7 +120,6 @@
                                                                                     </HBox.margin>
                                                                                 </Label>
                                                                                 <Label fx:id="memberPhoneLabel"
-                                                                                       text="To jest jakis bardzo długi tekst"
                                                                                        wrapText="true"
                                                                                        HBox.hgrow="ALWAYS">
                                                                                     <HBox.margin>
@@ -134,7 +144,6 @@
                                                                                     </HBox.margin>
                                                                                 </Label>
                                                                                 <Label fx:id="memberEmailLabel"
-                                                                                       text="To jest jakis bardzo długi tekst. To jest jakis bardzo długi tekst."
                                                                                        wrapText="true"
                                                                                        HBox.hgrow="ALWAYS">
                                                                                     <HBox.margin>
@@ -165,19 +174,34 @@
                                                                       maxWidth="-Infinity" prefHeight="200.0"
                                                                       prefWidth="300.0">
                                                                     <children>
-                                                                        <HBox alignment="CENTER" prefHeight="100.0"
-                                                                              prefWidth="200.0" VBox.vgrow="ALWAYS">
+                                                                        <HBox alignment="CENTER" prefHeight="118.0"
+                                                                              prefWidth="260.0" VBox.vgrow="ALWAYS">
                                                                             <children>
                                                                                 <TextField fx:id="bookIdTextField"
                                                                                            onInputMethodTextChanged="#searchForBook"
                                                                                            onKeyReleased="#searchForBook"
                                                                                            onMouseClicked="#searchForBook"
-                                                                                           promptText="Book ID"/>
+                                                                                           promptText="Book ID">
+                                                                                    <opaqueInsets>
+                                                                                        <Insets/>
+                                                                                    </opaqueInsets>
+                                                                                    <HBox.margin>
+                                                                                        <Insets top="30.0"/>
+                                                                                    </HBox.margin>
+                                                                                </TextField>
                                                                             </children>
                                                                             <VBox.margin>
                                                                                 <Insets bottom="5.0" left="5.0"
                                                                                         right="5.0" top="5.0"/>
                                                                             </VBox.margin>
+                                                                        </HBox>
+                                                                        <HBox alignment="TOP_CENTER" prefHeight="110.0"
+                                                                              prefWidth="270.0">
+                                                                            <children>
+                                                                                <Label fx:id="bookValidLabel"
+                                                                                       text="Invalid id number"
+                                                                                       textFill="RED" visible="false"/>
+                                                                            </children>
                                                                         </HBox>
                                                                     </children>
                                                                 </VBox>
@@ -193,7 +217,7 @@
                                                                                                 right="5.0" top="5.0"/>
                                                                                     </HBox.margin>
                                                                                 </Label>
-                                                                                <Label fx:id="bookTitleLabel" text="d"
+                                                                                <Label fx:id="bookTitleLabel"
                                                                                        wrapText="true"
                                                                                        HBox.hgrow="ALWAYS">
                                                                                     <HBox.margin>
@@ -217,7 +241,6 @@
                                                                                     </HBox.margin>
                                                                                 </Label>
                                                                                 <Label fx:id="bookAuthorLabel"
-                                                                                       text="To jest jakis bardzo długi tekst. To jest jakis bardzo długi tekst."
                                                                                        wrapText="true"
                                                                                        HBox.hgrow="ALWAYS">
                                                                                     <HBox.margin>
@@ -242,7 +265,6 @@
                                                                                     </HBox.margin>
                                                                                 </Label>
                                                                                 <Label fx:id="bookPublisherLabel"
-                                                                                       text="To jest jakis bardzo długi tekst."
                                                                                        wrapText="true"
                                                                                        HBox.hgrow="ALWAYS">
                                                                                     <HBox.margin>
@@ -292,7 +314,7 @@
                                               maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0"
                                               VBox.vgrow="ALWAYS">
                                             <children>
-                                                <Button fx:id="addIssueButton" mnemonicParsing="false"
+                                                <Button fx:id="addIssueButton" disable="true" mnemonicParsing="false"
                                                         onAction="#addNewIssue" text="Add Loan"/>
                                             </children>
                                         </HBox>

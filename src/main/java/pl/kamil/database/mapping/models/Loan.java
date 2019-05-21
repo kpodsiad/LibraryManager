@@ -10,10 +10,10 @@ public class Loan implements MappingModel
 	@DatabaseField(generatedId = true)
 	private Long id;
 
-	@DatabaseField(columnName = "BOOK", foreign = true, foreignAutoRefresh = true)
+	@DatabaseField(columnName = "BOOK", foreign = true, foreignAutoRefresh = true, canBeNull = false)
 	private Book book;
 
-	@DatabaseField(columnName = "MEMBER", foreign = true, foreignAutoRefresh = true)
+	@DatabaseField(columnName = "MEMBER", foreign = true, foreignAutoRefresh = true, canBeNull = false)
 	private Member member;
 
 

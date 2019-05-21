@@ -8,4 +8,9 @@ public class LoanDao extends CommonDao<Loan, Long>
 	{
 		super(Loan.class);
 	}
+
+	public void deleteNulls()
+	{
+
+	}
 }

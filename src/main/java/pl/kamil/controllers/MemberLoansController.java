@@ -10,6 +10,8 @@ import javafx.stage.WindowEvent;
 import pl.kamil.models.LoanFx;
 import pl.kamil.models.LoanModel;
 
+import java.util.stream.Collectors;
+
 public class MemberLoansController
 {
 	@FXML
@@ -46,9 +48,14 @@ public class MemberLoansController
 		this.loanModel = loanModel;
 	}
 
+	public void setMemberId(Long memberId)
+	{
+		this.memberId = memberId;
+	}
+
 	public void init()
 	{
 		tableView.getItems().clear();
-		tableView.getItems().addAll(loanModel.getLoansFromDataBase());
+		tableView.getItems().addAll(loanModel.getLoansFromDataBase().stream().filter(loanFx -> loanFx.getMemberId() == memberId).collect(Collectors.toList()));
 	}
 }
