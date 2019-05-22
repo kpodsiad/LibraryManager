@@ -52,6 +52,9 @@
                                 <HBox alignment="CENTER_RIGHT" maxHeight="150.0" prefHeight="150.0" prefWidth="300.0"
                                       VBox.vgrow="ALWAYS">
                                     <children>
+                                        <Button fx:id="deleteLoanButton" minHeight="50.0" minWidth="150.0"
+                                                mnemonicParsing="false" onAction="#deleteLoan" prefHeight="50.0"
+                                                prefWidth="150.0" text="Delete loan"/>
                                         <Button fx:id="returnButton" cancelButton="true" minHeight="50.0"
                                                 minWidth="150.0" mnemonicParsing="false" onAction="#closeStageAndReturn"
                                                 prefHeight="50.0" prefWidth="150.0" text="Return">

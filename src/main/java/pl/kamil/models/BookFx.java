@@ -1,5 +1,6 @@
 package pl.kamil.models;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -10,6 +11,7 @@ public class BookFx
 	private SimpleStringProperty author = new SimpleStringProperty();
 	private SimpleStringProperty publisher = new SimpleStringProperty();
 	private SimpleStringProperty releaseDate = new SimpleStringProperty();
+	private SimpleBooleanProperty available = new SimpleBooleanProperty();
 
 	public BookFx()
 	{
@@ -88,5 +90,25 @@ public class BookFx
 	public void setReleaseDate(String releaseDate)
 	{
 		this.releaseDate.set(releaseDate);
+	}
+
+	public boolean isAvailable()
+	{
+		return available.get();
+	}
+
+	public SimpleBooleanProperty availableProperty()
+	{
+		return available;
+	}
+
+	public void setAvailable(boolean available)
+	{
+		this.available.set(available);
+	}
+
+	public String isAvailableInString()
+	{
+		return available.get() ? "Yes" : "No";
 	}
 }

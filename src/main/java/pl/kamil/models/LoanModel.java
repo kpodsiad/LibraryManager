@@ -41,6 +41,30 @@ public class LoanModel
 		loanDao.delete(loansToDelete);
 	}
 
+	public void deleteLoansByIds(Collection<Long> ids)
+	{
+		List<LoanFx> nonDeletedLoans = loansFromDataBase.stream().filter(loanFx -> !ids.contains(loanFx.getId())).collect(Collectors.toList());
+		loansFromDataBase.clear();
+		loansFromDataBase.addAll(nonDeletedLoans);
+		loanDao.deleteByIds(ids);
+	}
+
+	public void deleteLoansByBooksIds(Collection<Long> booksIds)
+	{
+		List<LoanFx> nonDeletedLoans = loansFromDataBase.stream().filter(loanFx -> !booksIds.contains(loanFx.getBookId())).collect(Collectors.toList());
+		loansFromDataBase.clear();
+		loansFromDataBase.addAll(nonDeletedLoans);
+		loanDao.deleteByBookIds(booksIds);
+	}
+
+	public void deleteLoansByMembersIds(Collection<Long> memberIds)
+	{
+		List<LoanFx> nonDeletedLoans = loansFromDataBase.stream().filter(loanFx -> !memberIds.contains(loanFx.getMemberId())).collect(Collectors.toList());
+		loansFromDataBase.clear();
+		loansFromDataBase.addAll(nonDeletedLoans);
+		loanDao.deleteByMemberIds(memberIds);
+	}
+
 	public Collection<LoanFx> searchForBook(String partialTitle)
 	{
 		if(partialTitle.equals(""))

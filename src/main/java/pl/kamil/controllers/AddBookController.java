@@ -1,36 +1,42 @@
 package pl.kamil.controllers;
 
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
+import javafx.beans.binding.BooleanBinding;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import pl.kamil.models.BookModel;
+import pl.kamil.utils.Regexes;
+
+import java.util.regex.Pattern;
 
 public class AddBookController
 {
 
+
 	@FXML
-	private TextField bookNameTextField;
+	private TextField bookTitleTextField;
 	@FXML
 	private TextField authorTextField;
 	@FXML
 	private TextField publisherTextField;
 	@FXML
-	private TextField releaseDateTextField;
+	private TextField releaseYearTextField;
+	@FXML
+	private Label titleValidateLabel;
+	@FXML
+	private Label authorValidateLabel;
+	@FXML
+	private Label publisherValidateLabel;
+	@FXML
+	private Label yearValidateLabel;
 	@FXML
 	private Button saveButton;
 	@FXML
 	private Button returnButton;
-
 	private BookModel bookModel;
 
-	@FXML
-	private void initialize()
-	{
-	}
 
 	@FXML
 	private void exitCurrentWindowAndReturn()
@@ -40,33 +46,69 @@ public class AddBookController
 	}
 
 	@FXML
-	private void saveBook(ActionEvent event)
+	private void saveBook()
 	{
 		bookModel.saveBookInDataBase();
 		exitCurrentWindowAndReturn();
 	}
 
+	@FXML
+	void validateTitle()
+	{
+		validate(bookTitleTextField, Regexes.ALPHANUMERIC, titleValidateLabel);
+	}
+
+	@FXML
+	void validateAuthor()
+	{
+		validate(authorTextField, Regexes.ALPHANUMERIC, authorValidateLabel);
+	}
+
+	@FXML
+	void validatePublisher()
+	{
+		validate(publisherTextField, Regexes.ONLY_LETTERS, publisherValidateLabel);
+	}
+
+	@FXML
+	void validateYear()
+	{
+		validate(releaseYearTextField, Regexes.YEAR, yearValidateLabel);
+	}
+
+	private void validate(TextField textField, Pattern pattern, Label label)
+	{
+		String textFromTextField = textField.getText();
+		if(textFromTextField.equals("") || pattern.matcher(textFromTextField).matches())
+			label.setVisible(false);
+		else
+			label.setVisible(true);
+	}
+
 	public void init()
 	{
-		saveButton.disableProperty().bind(
-				Bindings.isEmpty(authorTextField.textProperty())
-						.or(Bindings.isEmpty(authorTextField.textProperty())
-								.or(Bindings.isEmpty(publisherTextField.textProperty())
-										.or(Bindings.isEmpty(releaseDateTextField.textProperty())
-										))));
-		//TODO validation
-		SimpleBooleanProperty titleValid = new SimpleBooleanProperty();
 
-		bookModel.getBookFxObjectProperty().nameProperty().bind(bookNameTextField.textProperty());
+		BooleanBinding saveButtonDisableBinding =
+				authorTextField.textProperty().isEmpty()
+						.or(authorTextField.textProperty().isEmpty())
+						.or(publisherTextField.textProperty().isEmpty())
+						.or(releaseYearTextField.textProperty().isEmpty())
+						.or(titleValidateLabel.visibleProperty())
+						.or(authorValidateLabel.visibleProperty())
+						.or(publisherValidateLabel.visibleProperty())
+						.or(yearValidateLabel.visibleProperty());
+
+		saveButton.disableProperty().bind(saveButtonDisableBinding);
+
+		bookModel.getBookFxObjectProperty().nameProperty().bind(bookTitleTextField.textProperty());
 		bookModel.getBookFxObjectProperty().authorProperty().bind(authorTextField.textProperty());
 		bookModel.getBookFxObjectProperty().publisherProperty().bind(publisherTextField.textProperty());
-		bookModel.getBookFxObjectProperty().releaseDateProperty().bind(releaseDateTextField.textProperty());
+		bookModel.getBookFxObjectProperty().releaseDateProperty().bind(releaseYearTextField.textProperty());
 	}
 
 	public void setModel(BookModel bookModel)
 	{
 		this.bookModel = bookModel;
-		System.out.println("Ustawianie");
 	}
 }
 

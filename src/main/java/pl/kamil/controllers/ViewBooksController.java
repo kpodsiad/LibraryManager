@@ -1,5 +1,6 @@
 package pl.kamil.controllers;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -9,6 +10,10 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import pl.kamil.models.BookFx;
 import pl.kamil.models.BookModel;
+import pl.kamil.models.LoanModel;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class ViewBooksController
 {
@@ -16,6 +21,8 @@ public class ViewBooksController
 	private TableView<BookFx> tableView;
 	@FXML
 	private TableColumn<BookFx, Long> idColumn;
+	@FXML
+	private TableColumn<BookFx, String> availableColumn;
 	@FXML
 	private TableColumn<BookFx, String> nameColumn;
 	@FXML
@@ -32,15 +39,11 @@ public class ViewBooksController
 	private TextField bookNameTextField;
 
 	private BookModel bookModel;
+	private LoanModel loanModel;
 
 	public BookModel getBookModel()
 	{
 		return bookModel;
-	}
-
-	public void setModel(BookModel bookModel)
-	{
-		this.bookModel = bookModel;
 	}
 
 	@FXML
@@ -54,6 +57,8 @@ public class ViewBooksController
 	private void deleteBook()
 	{
 		ObservableList<BookFx> selectedItems = tableView.getSelectionModel().getSelectedItems();
+		Collection<Long> loansToDelete = selectedItems.stream().map(BookFx::getId).collect(Collectors.toList());
+		loanModel.deleteLoansByBooksIds(loansToDelete);
 		bookModel.deleteBooksInDataBase(selectedItems);
 		tableView.getItems().removeAll(selectedItems);
 	}
@@ -74,6 +79,7 @@ public class ViewBooksController
 	{
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+		availableColumn.setCellValueFactory(param -> Bindings.createStringBinding(() -> param.getValue().isAvailableInString()));
 		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 		authorColumn.setCellValueFactory(new PropertyValueFactory<>("author"));
 		publisherColumn.setCellValueFactory(new PropertyValueFactory<>("publisher"));
@@ -85,7 +91,7 @@ public class ViewBooksController
 		makeCellsWrap(releaseDateColumn);
 	}
 
-	public void init()
+	public void refresh()
 	{
 		tableView.getItems().clear();
 		tableView.getItems().addAll(bookModel.getBooksFromDataBase());
@@ -104,4 +110,15 @@ public class ViewBooksController
 			return cell;
 		});
 	}
+
+	public void setModel(BookModel bookModel)
+	{
+		this.bookModel = bookModel;
+	}
+
+	public void setLoanModel(LoanModel loanModel)
+	{
+		this.loanModel = loanModel;
+	}
+
 }

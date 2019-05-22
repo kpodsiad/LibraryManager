@@ -12,14 +12,16 @@
             <children>
                 <TableView fx:id="tableView" prefHeight="600.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="firstNameColumn" maxWidth="300.0" minWidth="100.0" prefWidth="200.0"
+                        <TableColumn fx:id="idColumn" maxWidth="300.0" minWidth="64.0" prefWidth="92.0"
+                                     text="Member ID"/>
+                        <TableColumn fx:id="firstNameColumn" maxWidth="300.0" minWidth="100.0" prefWidth="136.0"
                                      text="First Name"/>
-                        <TableColumn fx:id="lastNameColumn" maxWidth="300.0" minWidth="100.0" prefWidth="200.0"
+                        <TableColumn fx:id="lastNameColumn" maxWidth="300.0" minWidth="100.0" prefWidth="225.0"
                                      text="Last Name"/>
                         <TableColumn fx:id="emailColumn" editable="false" maxWidth="300.0" minWidth="100.0"
-                                     prefWidth="200.0" text="Email"/>
+                                     prefWidth="204.0" text="Email"/>
                         <TableColumn fx:id="phoneColumn" editable="false" maxWidth="300.0" minWidth="100.0"
-                                     prefWidth="200.0" text="Phone"/>
+                                     prefWidth="142.0" text="Phone"/>
                     </columns>
                 </TableView>
                 <AnchorPane maxHeight="75.0" maxWidth="1.7976931348623157E308" prefHeight="150.0" prefWidth="800.0"

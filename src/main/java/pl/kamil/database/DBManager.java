@@ -26,7 +26,7 @@ public class DBManager
 	public static void initDatabase()
 	{
 		createConnectionSource();
-		createTable();
+		createTableIfNotExists();
 		closeConnectionSource();
 	}
 
@@ -64,7 +64,7 @@ public class DBManager
 		}
 	}
 
-	private static void createTable()
+	private static void createTableIfNotExists()
 	{
 		try
 		{
@@ -75,13 +75,6 @@ public class DBManager
 		{
 			LOGGER.warn(e.getMessage());
 		}
-	}
-
-	@Override
-	protected void finalize() throws Throwable
-	{
-		super.finalize();
-		closeConnectionSource();
 	}
 }
 

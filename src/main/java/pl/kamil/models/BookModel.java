@@ -38,7 +38,6 @@ public class BookModel
 	{
 		BookFx bookFx = bookFxObjectProperty.get();
 		Book book = Converter.convertBookFxToBook(bookFx);
-		//BookDao bookDao = new BookDao();
 		bookDao.create(book);
 		booksFromDataBase.add(Converter.convertBookToBookFx(book));
 	}
@@ -47,9 +46,19 @@ public class BookModel
 	{
 		BookFx bookFx = bookFxObjectPropertyEdit.get();
 		Book book = Converter.convertBookFxToBook(bookFx);
-		//BookDao bookDao = new BookDao();
 		bookDao.delete(book);
 		booksFromDataBase.remove(bookFx);
+	}
+
+	public void createOrUpdate(BookFx bookFx)
+	{
+		Book book = Converter.convertBookFxToBook(bookFx);
+		bookDao.createOrUpdate(book);
+		booksFromDataBase.forEach(bookFx1 ->
+		{
+			if(bookFx1.getId() == bookFx.getId())
+				bookFx1 = bookFx;
+		});
 	}
 
 	public Collection<BookFx> searchForBook(String partialName)

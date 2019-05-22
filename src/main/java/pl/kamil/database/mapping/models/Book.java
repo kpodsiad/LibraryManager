@@ -21,16 +21,20 @@ public class Book implements MappingModel
 	@DatabaseField(columnName = "RELEASED_DATE", canBeNull = false)
 	private String releasedDate;
 
+	@DatabaseField(columnName = "AVAILABLE", canBeNull = false)
+	private boolean available = true;
+
 	public Book()
 	{
 	}
 
-	public Book(String author, String bookName, String publisher, String releasedDate)
+	public Book(String author, String bookName, String publisher, String releasedDate, boolean available)
 	{
 		this.author = author;
 		this.bookName = bookName;
 		this.publisher = publisher;
 		this.releasedDate = releasedDate;
+		this.available = available;
 	}
 
 	public Long getId()
@@ -83,15 +87,13 @@ public class Book implements MappingModel
 		this.releasedDate = releasedDate;
 	}
 
-	@Override
-	public String toString()
+	public boolean isAvailable()
 	{
-		return "Book{" +
-				"id=" + id +
-				", author='" + author + '\'' +
-				", bookName='" + bookName + '\'' +
-				", publisher='" + publisher + '\'' +
-				", releasedDate='" + releasedDate + '\'' +
-				'}';
+		return available;
+	}
+
+	public void setAvailable(boolean available)
+	{
+		this.available = available;
 	}
 }

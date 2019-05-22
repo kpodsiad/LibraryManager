@@ -7,14 +7,20 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import pl.kamil.models.LoanModel;
 import pl.kamil.models.MemberFx;
 import pl.kamil.models.MemberModel;
+
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class ViewMembersController
 {
 
 	@FXML
 	private TableView<MemberFx> tableView;
+	@FXML
+	private TableColumn<MemberFx, Long> idColumn;
 	@FXML
 	private TableColumn<MemberFx, String> firstNameColumn;
 	@FXML
@@ -31,6 +37,7 @@ public class ViewMembersController
 	private TextField memberNameTextField;
 
 	private MemberModel memberModel;
+	private LoanModel loanModel;
 
 	@FXML
 	void closeStageAndReturn()
@@ -43,6 +50,8 @@ public class ViewMembersController
 	void deleteMember()
 	{
 		ObservableList<MemberFx> selectedItems = tableView.getSelectionModel().getSelectedItems();
+		Collection<Long> loansToDelete = selectedItems.stream().map(MemberFx::getId).collect(Collectors.toList());
+		loanModel.deleteLoansByMembersIds(loansToDelete);
 		memberModel.deleteBooksInDataBase(selectedItems);
 		tableView.getItems().removeAll(selectedItems);
 	}
@@ -62,6 +71,7 @@ public class ViewMembersController
 	private void initialize()
 	{
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
 		firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
 		lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 		emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -96,5 +106,10 @@ public class ViewMembersController
 	public void setModel(MemberModel memberModel)
 	{
 		this.memberModel = memberModel;
+	}
+
+	public void setLoanModel(LoanModel loanModel)
+	{
+		this.loanModel = loanModel;
 	}
 }

@@ -3,31 +3,64 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<AnchorPane prefHeight="340.0" prefWidth="653.0" xmlns="http://javafx.com/javafx/8.0.171"
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171"
             xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.kamil.controllers.AddMemberController">
    <children>
       <VBox prefHeight="500.0" prefWidth="653.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <TextField fx:id="firstNameTextField" promptText="First Name">
+             <TextField fx:id="firstNameTextField" onInputMethodTextChanged="#validateFirstName"
+                        onKeyReleased="#validateFirstName" onMouseClicked="#validateFirstName" promptText="First Name">
                <VBox.margin>
                   <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
             </TextField>
-            <TextField fx:id="lastNameTextField" layoutX="20.0" layoutY="30.0" promptText="Last Name">
+             <Label fx:id="firstNameValidateLabel"
+                    text="First name contains invalid characters. Only letters are allowed" textFill="RED"
+                    visible="false">
+                 <padding>
+                     <Insets left="10.0"/>
+                 </padding>
+             </Label>
+             <TextField fx:id="lastNameTextField" layoutX="20.0" layoutY="30.0"
+                        onInputMethodTextChanged="#validateLastName" onKeyReleased="#validateLastName"
+                        onMouseClicked="#validateLastName" promptText="Last Name">
                <VBox.margin>
                   <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
             </TextField>
-            <TextField fx:id="phoneNumberTextField" layoutX="20.0" layoutY="30.0" promptText="Phone Number">
+             <Label fx:id="lastNameValidateLabel" text="Last name contains invalid characters. Only letters are allowed"
+                    textFill="RED" visible="false">
+                 <padding>
+                     <Insets left="10.0"/>
+                 </padding>
+             </Label>
+             <TextField fx:id="phoneNumberTextField" layoutX="20.0" layoutY="30.0"
+                        onInputMethodTextChanged="#validatePhoneNumber" onKeyReleased="#validatePhoneNumber"
+                        onMouseClicked="#validatePhoneNumber" promptText="Phone Number">
                <VBox.margin>
                   <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
                </VBox.margin>
             </TextField>
-            <TextField fx:id="emailTextField" layoutX="10.0" layoutY="76.0" promptText="Email Address">
+             <Label fx:id="phoneNumberValidateLabel"
+                    text="Phone number contains invalid characters. Only digits are allowed" textFill="RED"
+                    visible="false">
+                 <padding>
+                     <Insets left="10.0"/>
+                 </padding>
+             </Label>
+             <TextField fx:id="emailTextField" layoutX="10.0" layoutY="76.0"
+                        onInputMethodTextChanged="#validateEmailAddress" onKeyReleased="#validateEmailAddress"
+                        onMouseClicked="#validateEmailAddress" promptText="Email Address">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
             </TextField>
+             <Label fx:id="emailAddressValidateLabel" text="Please use standard email format like name@domain.com"
+                    textFill="RED" visible="false" wrapText="true" VBox.vgrow="ALWAYS">
+                 <padding>
+                     <Insets left="10.0"/>
+                 </padding>
+             </Label>
             <HBox alignment="TOP_RIGHT" prefHeight="94.0" prefWidth="726.0">
                <children>
                    <Button fx:id="saveButton" defaultButton="true" mnemonicParsing="false" onAction="#saveMember"

@@ -40,11 +40,14 @@ public class RootController
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RootController.class);
 
+
 	private Stage primaryStage;
 
 	private BookModel bookModel = new BookModel();
 	private MemberModel memberModel = new MemberModel();
 	private LoanModel loanModel = new LoanModel();
+
+	private ViewLoansController viewLoansController;
 
 	private SimpleBooleanProperty buttonsProperty = new SimpleBooleanProperty();
 
@@ -81,6 +84,8 @@ public class RootController
 	private Label bookPublisherLabel;
 	@FXML
 	private Label bookYearLabel;
+	@FXML
+	private Label bookAvailableLabel;
 
 	@FXML
 	private Label memberValidLabel;
@@ -91,9 +96,11 @@ public class RootController
 	@FXML
 	private void initialize()
 	{
-		//memberLoansButton.disableProperty().bind(Bindings.isEmpty(memberIdTextField.textProperty()));
-		//addIssueButton.disableProperty().bind(Bindings.isEmpty(memberIdTextField.textProperty()).or(Bindings.isEmpty(bookIdTextField.textProperty())));
-		addIssueButton.disableProperty().bind(Bindings.isEmpty(memberNameLabel.textProperty()).or(Bindings.isEmpty(bookTitleLabel.textProperty())));
+		addIssueButton.disableProperty().bind(
+				Bindings.isEmpty(memberNameLabel.textProperty())
+						.or(Bindings.isEmpty(bookTitleLabel.textProperty())
+								.or(Bindings.equal(bookAvailableLabel.textProperty(), "No"))));
+
 		addBookButton.disableProperty().bind(buttonsProperty);
 		addMemberButton.disableProperty().bind(buttonsProperty);
 		viewBooksButton.disableProperty().bind(buttonsProperty);
@@ -109,10 +116,17 @@ public class RootController
 		long bookId = Long.parseLong(bookIdTextField.getText());
 		Optional<MemberFx> optionalMemberFx = memberModel.searchForMemberById(memberId);
 		Optional<BookFx> optionalBookFx = bookModel.searchForBookById(bookId);
-		if(optionalBookFx.isPresent() && optionalMemberFx.isPresent())
+
+		//if(optionalBookFx.isPresent() && optionalMemberFx.isPresent())
 		{
-			Loan loan = new Loan(Converter.convertBookFxToBook(optionalBookFx.get()), Converter.convertMemberFxToMember(optionalMemberFx.get()));
+			BookFx bookFx = optionalBookFx.get();
+			Loan loan = new Loan(Converter.convertBookFxToBook(bookFx), Converter.convertMemberFxToMember(optionalMemberFx.get()));
+			bookFx.setAvailable(false);
+			bookModel.createOrUpdate(bookFx);
 			loanModel.saveLoanInDataBase(loan);
+			if(viewLoansButton.isDisabled() && viewLoansController != null)
+				viewLoansController.refresh();
+			searchForBook();
 		}
 
 	}
@@ -195,7 +209,7 @@ public class RootController
 
 	private void clearBookFields()
 	{
-		setBookFields(new Book("", "", "", ""));
+		setBookFields(new Book("", "", "", "", false));
 	}
 
 	private void setBookFields(Book book)
@@ -204,6 +218,12 @@ public class RootController
 		bookAuthorLabel.setText(book.getAuthor());
 		bookPublisherLabel.setText(book.getPublisher());
 		bookYearLabel.setText(book.getReleasedDate());
+		if(book.isAvailable())
+			bookAvailableLabel.setText("Yes");
+		else if(!bookTitleLabel.getText().equals(""))
+			bookAvailableLabel.setText("No");
+		else
+			bookAvailableLabel.setText("");
 	}
 
 	@FXML
@@ -235,7 +255,8 @@ public class RootController
 			Parent root = loader.load();
 			ViewBooksController viewBooksController = loader.getController();
 			viewBooksController.setModel(bookModel);
-			viewBooksController.init();
+			viewBooksController.setLoanModel(loanModel);
+			viewBooksController.refresh();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
 			makeButtonsImpact(newStage);
@@ -275,6 +296,7 @@ public class RootController
 			Parent root = loader.load();
 			ViewMembersController viewMembersController = loader.getController();
 			viewMembersController.setModel(memberModel);
+			viewMembersController.setLoanModel(loanModel);
 			viewMembersController.init();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();
@@ -294,8 +316,9 @@ public class RootController
 		{
 			FXMLLoader loader = getFxmlLoader(VIEW_LOANS_FXML);
 			Parent root = loader.load();
-			ViewLoansController viewLoansController = loader.getController();
+			viewLoansController = loader.getController();
 			viewLoansController.setModel(loanModel);
+			viewLoansController.setBookModel(bookModel);
 			viewLoansController.init();
 			Scene newScene = new Scene(root);
 			Stage newStage = new Stage();

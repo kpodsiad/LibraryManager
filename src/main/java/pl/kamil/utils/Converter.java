@@ -44,6 +44,7 @@ public class Converter
 		book.setAuthor(bookFx.getAuthor());
 		book.setPublisher(bookFx.getPublisher());
 		book.setReleasedDate(bookFx.getReleaseDate());
+		book.setAvailable(bookFx.isAvailable());
 
 		return book;
 	}
@@ -57,6 +58,7 @@ public class Converter
 		bookFx.setAuthor(book.getAuthor());
 		bookFx.setPublisher(book.getPublisher());
 		bookFx.setReleaseDate(book.getReleasedDate());
+		bookFx.setAvailable(book.isAvailable());
 
 		return bookFx;
 	}
@@ -74,7 +76,7 @@ public class Converter
 	public static Loan convertLoanFxToLoan(LoanFx loanFx)
 	{
 		Loan loan = new Loan();
-
+		loan.setId(loanFx.getId());
 		return loan;
 	}
 }

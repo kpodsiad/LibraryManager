@@ -13,14 +13,16 @@
                 <TableView fx:id="tableView" prefHeight="520.0" prefWidth="800.0" VBox.vgrow="ALWAYS">
                     <columns>
                         <TableColumn fx:id="idColumn" maxWidth="300.0" minWidth="64.0" prefWidth="75.0" text="Book ID"/>
-                        <TableColumn fx:id="nameColumn" maxWidth="300.0" minWidth="100.0" prefWidth="180.0"
+                        <TableColumn fx:id="availableColumn" maxWidth="300.0" minWidth="64.0" prefWidth="79.0"
+                                     text="Available"/>
+                        <TableColumn fx:id="nameColumn" maxWidth="300.0" minWidth="100.0" prefWidth="176.0"
                                      text="Book Name"/>
                         <TableColumn fx:id="authorColumn" maxWidth="300.0" minWidth="100.0" prefWidth="180.0"
                                      text="Author"/>
                         <TableColumn fx:id="publisherColumn" editable="false" maxWidth="300.0" minWidth="100.0"
                                      prefWidth="180.0" text="Publisher"/>
                         <TableColumn fx:id="releaseDateColumn" editable="false" maxWidth="300.0" minWidth="100.0"
-                                     prefWidth="180.0" text="Release date"/>
+                                     prefWidth="109.0" text="Release year"/>
                     </columns>
                 </TableView>
                 <AnchorPane maxHeight="80.0" prefHeight="80.0" prefWidth="780.0" VBox.vgrow="NEVER">

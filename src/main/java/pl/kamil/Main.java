@@ -7,11 +7,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import pl.kamil.controllers.RootController;
 import pl.kamil.database.DAO.BookDao;
-import pl.kamil.database.DAO.LoanDao;
 import pl.kamil.database.DAO.MemberDao;
 import pl.kamil.database.DBManager;
 import pl.kamil.database.mapping.models.Book;
-import pl.kamil.database.mapping.models.Loan;
 import pl.kamil.database.mapping.models.Member;
 
 import java.io.IOException;
@@ -22,7 +20,7 @@ public class Main extends Application
 	public void start(Stage primaryStage)
 	{
 		DBManager.initDatabase();
-		Book book = new Book("Autor", "Tytul", "Wydawnictwo Bardzo Fajne", "Rok");
+		Book book = new Book("Autor", "Tytul", "Wydawnictwo Bardzo Fajne", "Rok", true);
 		BookDao bookDao = new BookDao();
 		bookDao.create(book);
 		bookDao.create(book);
@@ -30,9 +28,10 @@ public class Main extends Application
 		MemberDao memberDao = new MemberDao();
 		memberDao.create(member);
 		memberDao.create(member);
-		Loan loan = new Loan(book, member);
-		LoanDao loanDao = new LoanDao();
-		loanDao.create(loan);
+//		Loan loan = new Loan(book, member);
+//		LoanDao loanDao = new LoanDao();
+//		loanDao.create(loan);
+
 		try
 		{
 			FXMLLoader loader = new FXMLLoader();

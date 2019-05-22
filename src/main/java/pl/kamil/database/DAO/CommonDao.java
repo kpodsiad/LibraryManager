@@ -4,6 +4,8 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.logger.Logger;
 import com.j256.ormlite.logger.LoggerFactory;
+import com.j256.ormlite.stmt.DeleteBuilder;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 import pl.kamil.database.DBManager;
 import pl.kamil.database.mapping.models.MappingModel;
@@ -16,25 +18,27 @@ import java.util.Optional;
 public abstract class CommonDao<T extends MappingModel, K>
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommonDao.class);
-	private final ConnectionSource connectionSource;
+	private ConnectionSource connectionSource;
 	private final Class<T> type;
 
 	public CommonDao(Class<T> type)
 	{
-		this.connectionSource = DBManager.getConnectionSource();
 		this.type = type;
 	}
-
 
 	public void createOrUpdate(T baseModel)
 	{
 		try
 		{
+			openConnectionSource();
 			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
 			commonDao.createOrUpdate(baseModel);
 		} catch(SQLException e)
 		{
-			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
+		} finally
+		{
+			closeConnectionSource();
 		}
 	}
 
@@ -42,11 +46,15 @@ public abstract class CommonDao<T extends MappingModel, K>
 	{
 		try
 		{
+			openConnectionSource();
 			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
 			commonDao.create(baseModel);
 		} catch(SQLException e)
 		{
-			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
+		} finally
+		{
+			closeConnectionSource();
 		}
 	}
 
@@ -58,7 +66,7 @@ public abstract class CommonDao<T extends MappingModel, K>
 			commonDao.create(baseModels);
 		} catch(SQLException e)
 		{
-			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 		}
 	}
 
@@ -66,11 +74,15 @@ public abstract class CommonDao<T extends MappingModel, K>
 	{
 		try
 		{
+			openConnectionSource();
 			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
 			commonDao.delete((T) baseModel);
 		} catch(SQLException e)
 		{
-			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
+		} finally
+		{
+			closeConnectionSource();
 		}
 	}
 
@@ -78,11 +90,15 @@ public abstract class CommonDao<T extends MappingModel, K>
 	{
 		try
 		{
+			openConnectionSource();
 			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
 			commonDao.delete(baseModels);
 		} catch(SQLException e)
 		{
-			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
+		} finally
+		{
+			closeConnectionSource();
 		}
 	}
 
@@ -90,11 +106,25 @@ public abstract class CommonDao<T extends MappingModel, K>
 	{
 		try
 		{
+			openConnectionSource();
 			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
 			commonDao.deleteById(id);
 		} catch(SQLException e)
 		{
-			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
+		}
+	}
+
+	public void deleteByIds(Collection<K> ids)
+	{
+		try
+		{
+			openConnectionSource();
+			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
+			commonDao.deleteIds(ids);
+		} catch(SQLException e)
+		{
+			LOGGER.warn(e.getMessage());
 		}
 	}
 
@@ -102,12 +132,13 @@ public abstract class CommonDao<T extends MappingModel, K>
 	{
 		try
 		{
+			openConnectionSource();
 			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
 			return Optional.ofNullable(commonDao.queryForId(id));
 
 		} catch(SQLException e)
 		{
-			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 		}
 		return Optional.empty();
 	}
@@ -116,12 +147,13 @@ public abstract class CommonDao<T extends MappingModel, K>
 	{
 		try
 		{
+			openConnectionSource();
 			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
 			return Optional.ofNullable(commonDao.queryForSameId(baseModel));
 
 		} catch(SQLException e)
 		{
-			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
 		}
 		return Optional.empty();
 	}
@@ -130,18 +162,59 @@ public abstract class CommonDao<T extends MappingModel, K>
 	{
 		try
 		{
+			openConnectionSource();
 			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
 			return commonDao.queryForAll();
 
 		} catch(SQLException e)
 		{
-			e.printStackTrace();
+			LOGGER.warn(e.getMessage());
+		} finally
+		{
+			closeConnectionSource();
 		}
 		return Collections.emptyList();
 	}
 
-	public ConnectionSource getConnectionSource()
+	public QueryBuilder<T, K> getQueryBuilder()
 	{
-		return connectionSource;
+		try
+		{
+			openConnectionSource();
+			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
+			return commonDao.queryBuilder();
+		} catch(SQLException e)
+		{
+			LOGGER.warn(e.getMessage());
+		}
+		return null;
+	}
+
+	public DeleteBuilder<T, K> getDeleteBuilder()
+	{
+		try
+		{
+			openConnectionSource();
+			Dao<T, K> commonDao = DaoManager.createDao(connectionSource, type);
+			return commonDao.deleteBuilder();
+		} catch(SQLException e)
+		{
+			LOGGER.warn(e.getMessage());
+		} finally
+		{
+			closeConnectionSource();
+		}
+		return null;
+	}
+
+	private void closeConnectionSource()
+	{
+		DBManager.closeConnectionSource();
+		connectionSource = null;
+	}
+
+	private void openConnectionSource()
+	{
+		connectionSource = DBManager.getConnectionSource();
 	}
 }
